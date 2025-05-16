@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Areas;
 
 use Illuminate\Http\Request;
 
@@ -27,7 +28,15 @@ class AreaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'Nombre' => 'required|string|max:255',
+            'Descripcion' => 'nullable|string',
+        ]);
+
+        Areas::create($validated);
+
+        // Redireccionar con mensaje de éxito
+        return redirect()->route('areaList')->with('success', 'Área creada correctamente.');
     }
 
     /**

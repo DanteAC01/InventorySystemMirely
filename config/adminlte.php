@@ -326,6 +326,12 @@ return [
             'url' => 'areaList',
             'icon' => 'fas fa-fw fa-user',
         ],
+    [
+        'text' => 'Nueva area',
+            'url' => 'areacreate',
+            'icon' => 'fas fa-fw fa-user',
+        
+    ],
         ['header' => 'MATERIALES'],
         [
             'text' => 'Lista de materiales',

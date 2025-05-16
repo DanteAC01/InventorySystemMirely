@@ -16,6 +16,5 @@ Route::middleware(['auth'])->group(function () {
  Route::get('/areacreate', [App\Http\Controllers\AreaController::class, 'create'])->name('areacreate');
  Route::post('/areasave', [App\Http\Controllers\AreaController::class, 'store'])->name('areasave');
  
-
  Route::get('/materialeList', [App\Http\Controllers\MarterialeController::class, 'index'])->name('materialeList');
 });
