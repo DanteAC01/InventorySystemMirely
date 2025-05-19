@@ -8,7 +8,7 @@
 
 @section('content')
  <div class="container-fluid">
-    <form action="{{ route('areasave') }}" method="POST">
+    <form action="{{ route('areaSave') }}" method="POST">
         @csrf
 
         <div class="mb-3">

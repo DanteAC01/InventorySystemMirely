@@ -324,19 +324,19 @@ return [
         [
             'text' => 'Lista de areas',
             'url' => 'areaList',
-            'icon' => 'fas fa-fw fa-user',
+            'icon' => 'fas fa-list-alt',
         ],
     [
         'text' => 'Nueva area',
-            'url' => 'areacreate',
-            'icon' => 'fas fa-fw fa-user',
+            'url' => 'areaCreate',
+            'icon' => 'fas fa-plus-circle',
         
     ],
         ['header' => 'MATERIALES'],
         [
-            'text' => 'Lista de materiales',
+            'text' => 'Materiales por area',
             'url' => 'materialeList',
-            'icon' => 'fas fa-fw fa-lock',
+            'icon' => 'fas fa-th-list',
         ],
     ],
 

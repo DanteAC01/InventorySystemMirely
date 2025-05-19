@@ -13,8 +13,11 @@ Route::middleware(['auth'])->group(function () {
 
 
  Route::get('/areaList', [App\Http\Controllers\AreaController::class, 'index'])->name('areaList');
- Route::get('/areacreate', [App\Http\Controllers\AreaController::class, 'create'])->name('areacreate');
- Route::post('/areasave', [App\Http\Controllers\AreaController::class, 'store'])->name('areasave');
+ Route::get('/areaCreate', [App\Http\Controllers\AreaController::class, 'create'])->name('areaCreate');
+ Route::post('/areaSave', [App\Http\Controllers\AreaController::class, 'store'])->name('areaSave');
  
  Route::get('/materialeList', [App\Http\Controllers\MarterialeController::class, 'index'])->name('materialeList');
+ Route::get('/materialeCreate', [App\Http\Controllers\MarterialeController::class, 'create'])->name('materialeCreate');
+ Route::post('/materialeSave', [App\Http\Controllers\MarterialeController::class, 'store'])->name('materialeSave');
+ Route::post('/materialeShow', [App\Http\Controllers\MarterialeController::class, 'show'])->name('materialeShow');
 });

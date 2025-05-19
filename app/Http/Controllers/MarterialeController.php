@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Materiales;
+use App\Models\Areas;
 
 use Illuminate\Http\Request;
 
@@ -11,7 +13,9 @@ class MarterialeController extends Controller
      */
     public function index()
     {
-        return view('materiale.index');
+        $areas = Areas::withCount('materiales')->get(); // asumiendo relación 'materiales'
+
+        return view('materiale.index', compact('areas'));
     }
 
     /**
@@ -20,6 +24,9 @@ class MarterialeController extends Controller
     public function create()
     {
         //
+        $areas = Areas::all();
+
+        return view('materiale.create', compact('areas'));
     }
 
     /**
@@ -27,7 +34,16 @@ class MarterialeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'estado' => 'required|string',
+            'fecha_ingreso' => 'required|date',
+            'area_id' => 'required|exists:areas,id',
+        ]);
+
+        Materiales::create($request->all());
+
+        return redirect()->route('materialeList')->with('success', 'Material registrado correctamente.');
     }
 
     /**
