@@ -9,18 +9,22 @@
 @section('content')
 
 <div class="d-flex justify-content-md-end mb-4">
-    <a href="{{ route('areacreate') }}" class="btn btn-primary">
+    <a href="{{ route('areaCreate') }}" class="btn btn-primary">
         <i class="bi bi-plus-lg"></i> Nuevo
     </a>
 </div>
 
  <div class="container-fluid">
   <table class="table">
-  <thead>
-    <tr>
-  
-    </tr>
-  </thead>
+  <tbody>
+    @foreach ($areas as $area)
+        <tr>
+          <td>{{ $area->id }}</td>
+          <td>{{ $area->Nombre }}</td>
+          <td>{{ $area->Descripcion }}</td>
+        </tr>
+    @endforeach
+  </tbody>
   <tbody>
     <tr>
     

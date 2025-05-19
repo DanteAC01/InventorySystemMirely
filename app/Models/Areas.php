@@ -17,6 +17,6 @@ class Areas extends Model
     //app/models/Area.php
     public function materiales()
     {
-     return $this ->hasmany(materiales::class);
+     return $this ->hasmany(materiales::class, 'area_id');
     }
 }

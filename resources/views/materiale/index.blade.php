@@ -9,38 +9,30 @@
 @section('content')
 
 <div class="d-flex justify-content-md-end mb-4">
- <button class="btn btn-primary" type="submit">Nuevo</button>
+    <a href="{{ route('materialeCreate') }}" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> Nuevo
+    </a>
 </div>
 
  <div class="container-fluid">
-  <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td colspan="2">Larry the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
-</table>
+  <div class="row">
+    @foreach ($areas as $area)
+      <div class="col-md-4 mb-4">
+        <a href="{{ route('materialeShow', $area->id) }}" class="text-decoration-none text-dark">
+          <div class="card border-primary shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="card-title">{{ $area->nombre }}</h5>
+              <p class="card-text">
+                <strong>{{ $area->materiales_count }}</strong> materiales registrados
+              </p>
+            </div>
+            <div class="card-footer bg-primary text-white text-center">
+              Ver detalles
+            </div>
+          </div>
+        </a>
+      </div>
+    @endforeach
+  </div>
  </div>
 @stop

@@ -11,8 +11,9 @@ class AreaController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        return view('areas.index');
+    {   
+        $areas = Areas::all();
+        return view('areas.index', compact('areas'));
     }
 
     /**
