@@ -13,12 +13,12 @@
 
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre del Área</label>
-            <input type="text" name="nombre" class="form-control" id="nombre" required>
+            <input type="text" name="Nombre" class="form-control" id="nombre" required>
         </div>
 
         <div class="mb-3">
             <label for="descripcion" class="form-label">Descripción (opcional)</label>
-            <textarea name="descripcion" class="form-control" id="descripcion" rows="3"></textarea>
+            <textarea name="Descripcion" class="form-control" id="descripcion" rows="3"></textarea>
         </div>
 
         <button type="submit" class="btn btn-success">Guardar</button>
