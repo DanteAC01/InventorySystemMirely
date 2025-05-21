@@ -28,6 +28,11 @@
       </select>
     </div>
 
+    <div class="mb-3">
+      <label for="cantidad" class="form-label">Cantidad</label>
+      <input type="number" name="cantidad" id="cantidad">
+    </div>
+
     <!-- Fecha de ingreso -->
     <div class="mb-3">
       <label for="fecha_ingreso" class="form-label">Fecha de ingreso</label>

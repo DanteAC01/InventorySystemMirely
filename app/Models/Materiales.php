@@ -12,12 +12,14 @@ class Materiales extends Model
         'nombre',
         'estado',
         'fecha_ingreso',
+         'cantidad',
         'area_id',
     ];
 
     // app/models/materiales.php
     public function area()
     {
-        return $this->belongsTo(Areas::class);
+        return $this->belongsTo(Areas::class, 'area_id');
     }
+
 }
