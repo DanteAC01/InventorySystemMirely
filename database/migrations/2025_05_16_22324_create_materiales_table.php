@@ -16,11 +16,10 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('estado');
             $table->date('fecha_ingreso');
-            
+            $table->integer('cantidad');
             // Clave foránea a la tabla 'areas'
             $table->unsignedBigInteger('area_id');
             $table->foreign('area_id')->references('id')->on('areas')->onDelete('cascade');
-
             $table->timestamps();
         });
     }

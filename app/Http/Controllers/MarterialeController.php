@@ -38,8 +38,10 @@ class MarterialeController extends Controller
             'nombre' => 'required|string|max:255',
             'estado' => 'required|string',
             'fecha_ingreso' => 'required|date',
+            'cantidad' => 'required|integer|min:1',
             'area_id' => 'required|exists:areas,id',
         ]);
+
 
         Materiales::create($request->all());
 
@@ -51,7 +53,12 @@ class MarterialeController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // Carga el área con todos sus materiales relacionados
+        $va = Areas::with('materiales.area')->findOrFail($id); // también cargamos la relación inversa 'area'
+
+        $areaNombre = $va->nombre;
+
+        return view('materiale.show', compact('va', 'areaNombre'));
     }
 
     /**
