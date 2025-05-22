@@ -17,7 +17,8 @@ Route::middleware(['auth'])->group(function () {
  Route::post('/areaSave', [App\Http\Controllers\AreaController::class, 'store'])->name('areaSave');
  
  Route::get('/materialeList', [App\Http\Controllers\MarterialeController::class, 'index'])->name('materialeList');
- Route::get('/materialeCreate', [App\Http\Controllers\MarterialeController::class, 'create'])->name('materialeCreate');
+ Route::get('/materialeCreate', [App\Http\Controllers\MarterialeController::class, 'create'])->name('
+ ');
  Route::post('/materialeSave', [App\Http\Controllers\MarterialeController::class, 'store'])->name('materialeSave');
  Route::get('/materialeShow{id}', [App\Http\Controllers\MarterialeController::class, 'show'])->name('materialeShow');
 });
