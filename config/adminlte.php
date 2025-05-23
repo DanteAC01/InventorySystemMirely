@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'Login Peru-Japon',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,12 +63,12 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'logo' => '<b>IDEX</b> PERU-JAPON',
+    'logo_img' => 'vendor/adminlte/dist/img/logoPJ.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'Admin Logo',
+    'logo_img_alt' => 'PJ Logo',
 
     /*
     |--------------------------------------------------------------------------
@@ -86,7 +86,7 @@ return [
     'auth_logo' => [
         'enabled' => false,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'vendor/adminlte/dist/img/logoPJ.png',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -113,8 +113,8 @@ return [
         'enabled' => true,
         'mode' => 'fullscreen',
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
-            'alt' => 'AdminLTE Preloader Image',
+            'path' => 'vendor/adminlte/dist/img/logoPJ.png',
+            'alt' => 'Pj Preloader Image',
             'effect' => 'animation__shake',
             'width' => 60,
             'height' => 60,
@@ -326,18 +326,24 @@ return [
             'url' => 'areaList',
             'icon' => 'fas fa-list-alt',
         ],
-    [
-        'text' => 'Nueva area',
+        [
+            'text' => 'Nueva area',
             'url' => 'areaCreate',
             'icon' => 'fas fa-plus-circle',
-        
-    ],
+            
+        ],
         ['header' => 'MATERIALES'],
         [
             'text' => 'Materiales por area',
             'url' => 'materialeList',
             'icon' => 'fas fa-th-list',
         ],
+        [
+            'text' => 'nuevo ingreso',
+            'url' => 'materialeCreate',
+            'icon' => 'fas fa-plus-circle',
+        ],  
+                  
     ],
 
     /*
