@@ -8,6 +8,7 @@ use App\Models\Alumno;
 use App\Models\User;
 use App\Models\Area;
 use Illuminate\Http\Request;
+use App\Models\PrestamoMaterial;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -20,7 +21,7 @@ class PrestamoController extends Controller
     public function index()
     {
         // Trae todos los préstamos con las relaciones cargadas
-        $loansDataList = Prestamo::with(['user', 'alumno', 'material.area'])->get();
+        $loansDataList = Prestamo::with(['user', 'alumno', 'prestamoMateriales.material.area'])->get();
 
         // Retorna la vista y pasa los datos   
         return view('loans.index', compact('loansDataList'));
@@ -35,9 +36,9 @@ class PrestamoController extends Controller
         $users = User::all();
         $materialsData = Material::all();
         $classroomsData = Area::all(); // Agregamos las áreas
-        $AlumnosData = Alumno::all();
+        $alumnosData = Alumno::all();
 
-        return view('loans.create', compact('materialsData', 'classroomsData','users','AlumnosData'));
+        return view('loans.create', compact('materialsData', 'classroomsData','users','alumnosData'));
     }
     
     public function materialsByClassroom($classroom)
@@ -51,32 +52,34 @@ class PrestamoController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'alumno_id' => 'required|exists:alumnos,id',
-            'material_id' => 'required|exists:materials,id',
-            'area_id' => 'required|exists:areas,id',
             'fecha_prestamo' => 'required|date',
             'fecha_devolucion' => 'nullable|date|after_or_equal:fecha_prestamo',
-            'cantidad' => 'required|integer|min:1',
-            'estado' => 'required|in:prestado,devuelto,pendiente,perdida',
             'observaciones' => 'nullable|string',
         ]);
 
-        $material = \App\Models\Material::findOrFail($validated['material_id']);
+        $prestamo = Prestamo::create([
+            'user_id' => Auth::id(),
+            'alumno_id' => $request->alumno_id,
+            'fecha_prestamo' => $request->fecha_prestamo,
+            'fecha_devolucion' => $request->fecha_devolucion,
+            'observaciones' => $request->observaciones ?? null,
+        ]);
 
-        if ((int)$validated['cantidad'] > (int)$material->cantidad_disponible) {
-            return back()->withErrors(['cantidad' => 'No hay suficiente cantidad disponible.']);
+        $materials = json_decode($request->materials_json, true);
+
+        foreach ($materials as $material) {
+            PrestamoMaterial::create([
+                'prestamo_id' => $prestamo->id,
+                'material_id' => $material['material_id'],
+                'area_id' => $material['area_id'],
+                'cantidad' => $material['cantidad'],
+                'estado' => $material['estado'],
+            ]);
         }
 
-        // Descontar cantidad
-        $material->cantidad_disponible -= $validated['cantidad'];
-        $material->save();
-
-        $validated['user_id'] = Auth::id();
-
-        Prestamo::create($validated);
-        
-        return redirect()->route('loanList')->with('success', 'Préstamo registrado correctamente.');
+        return redirect()->route('loanList')->with('success', 'Préstamo creado correctamente.');
     }
 
     /**
@@ -90,13 +93,16 @@ class PrestamoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+    
     public function edit($id)
     {
         $loan = Prestamo::findOrFail($id);
-        $AlumnosData = Alumno::all();
+        $alumnosData = Alumno::all();
         $classroomsData = Area::all();
+        $materialsData = Material::all();
+        $prestamoMaterialData = $loan->prestamoMateriales;
 
-        return view('loans.edit', compact('loan', 'AlumnosData', 'classroomsData'));
+        return view('loans.edit', compact('loan', 'alumnosData', 'classroomsData', 'materialsData', 'prestamoMaterialData'));
     }
 
     /**
@@ -106,15 +112,39 @@ class PrestamoController extends Controller
     {
         $request->validate([
             'alumno_id' => 'required|exists:alumnos,id',
-            'material_id' => 'required|exists:materials,id',
             'fecha_prestamo' => 'required|date',
-            'fecha_devolucion' => 'nullable|date',
-            'cantidad' => 'required|integer|min:1',
-            'estado' => 'required|string',
+            'fecha_devolucion' => 'nullable|date|after_or_equal:fecha_prestamo',
+            'observaciones' => 'nullable|string',
+            'materiales' => 'required|array|min:1',
+            'materiales.*.material_id' => 'required|exists:materials,id',
+            'materiales.*.area_id' => 'required|exists:areas,id',
+            'materiales.*.cantidad' => 'required|integer|min:1',
+            'materiales.*.estado' => 'required|string|in:prestado,devuelto,pendiente,perdida',
         ]);
 
         $loan = Prestamo::findOrFail($id);
-        $loan->update($request->all());
+
+        // Actualiza el préstamo
+        $loan->update([
+            'alumno_id' => $request->alumno_id,
+            'fecha_prestamo' => $request->fecha_prestamo,
+            'fecha_devolucion' => $request->fecha_devolucion,
+            'observaciones' => $request->observaciones,
+        ]);
+
+        // Elimina materiales anteriores del préstamo
+        $loan->prestamoMateriales()->delete();
+
+        // Crea los nuevos materiales
+        foreach ($request->materiales as $material) {
+            PrestamoMaterial::create([
+                'prestamo_id' => $loan->id,
+                'material_id' => $material['material_id'],
+                'area_id' => $material['area_id'],
+                'cantidad' => $material['cantidad'],
+                'estado' => $material['estado'],
+            ]);
+        }
 
         return redirect()->route('loanList')->with('success', 'Préstamo actualizado correctamente.');
     }

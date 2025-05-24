@@ -12,8 +12,6 @@ class Prestamo extends Model
     protected $fillable = [
         'user_id',
         'alumno_id',
-        'material_id',
-        'area_id',
         'fecha_prestamo',
         'fecha_devolucion',
         'cantidad',
@@ -32,12 +30,8 @@ class Prestamo extends Model
         return $this->belongsTo(Alumno::class, 'alumno_id');
     }
 
-    public function material()
+        public function prestamoMateriales()
     {
-        return $this->belongsTo(Material::class, 'material_id');
-    }
-
-    public function area() {
-        return $this->belongsTo(Areas::class, 'area_id');
+        return $this->hasMany(PrestamoMaterial::class);
     }
 }
