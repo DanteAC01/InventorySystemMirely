@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Areas;
+use App\Models\Area;
 
 use Illuminate\Http\Request;
 
@@ -12,8 +12,8 @@ class AreaController extends Controller
      */
     public function index()
     {   
-        $areas = Areas::all();
-        return view('areas.index', compact('areas'));
+        $classroomDataList = Area::all();
+        return view('classroom.index', compact('classroomDataList'));
     }
 
     /**
@@ -21,7 +21,7 @@ class AreaController extends Controller
      */
     public function create()
     {
-        return view('areas.create');
+        return view('classroom.create');
     }
 
     /**
@@ -30,14 +30,13 @@ class AreaController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'Nombre' => 'required|string|max:255',
-            'Descripcion' => 'nullable|string',
+            'nombre' => 'required|string|max:255',
         ]);
 
-        Areas::create($validated);
+        Area::create($validated);
 
         // Redireccionar con mensaje de éxito
-        return redirect()->route('areaList')->with('success', 'Área creada correctamente.');
+        return redirect()->route('classroomList')->with('success', 'Área creada correctamente.');
     }
 
     /**
@@ -53,7 +52,9 @@ class AreaController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $classroom = Area::findOrFail($id); // Lanza 404 si no encuentra el registro
+
+        return view('classroom.edit', compact('classroom'));
     }
 
     /**
@@ -61,14 +62,28 @@ class AreaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
-    }
+        // Validación de datos
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+        ]);
 
+        // Buscar y actualizar
+        $classroom = Area::findOrFail($id);
+        $classroom->nombre = $request->input('nombre');
+        $classroom->save();
+
+        // Redirigir con mensaje de éxito
+        return redirect()->route('classroomList')->with('success', 'Aula actualizada correctamente.');
+    }
     /**
      * Remove the specified resource from storage.
      */
+    
     public function destroy(string $id)
     {
-        //
+        $classroom = Classroom::findOrFail($id);
+        $classroom->delete();
+
+        return redirect()->route('classroomList')->with('success', 'Aula eliminada correctamente.');
     }
 }

@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('materiales', function (Blueprint $table) {
+        Schema::create('materials', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
+            $table->string('descripcion');
+            $table->integer('total');
+            $table->integer('cantidad_disponible');
             $table->string('estado');
             $table->date('fecha_ingreso');
-            $table->integer('cantidad');
-            // Clave foránea a la tabla 'areas'
             $table->unsignedBigInteger('area_id');
             $table->foreign('area_id')->references('id')->on('areas')->onDelete('cascade');
             $table->timestamps();

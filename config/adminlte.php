@@ -323,27 +323,33 @@ return [
         ['header' => 'AREAS'],
         [
             'text' => 'Lista de areas',
-            'url' => 'areaList',
+            'url' => 'classroomList',
             'icon' => 'fas fa-list-alt',
         ],
         [
             'text' => 'Nueva area',
-            'url' => 'areaCreate',
+            'url' => 'classroomCreate',
             'icon' => 'fas fa-plus-circle',
             
         ],
         ['header' => 'MATERIALES'],
         [
             'text' => 'Materiales por area',
-            'url' => 'materialeList',
+            'url' => 'materialList',
             'icon' => 'fas fa-th-list',
         ],
         [
             'text' => 'nuevo ingreso',
-            'url' => 'materialeCreate',
+            'url' => 'materialCreate',
             'icon' => 'fas fa-plus-circle',
         ],  
-                  
+        ['header' => 'Prestamos'],
+        [
+            'text' => 'Lista de prestamos',
+            'url' => 'loanList',
+            'icon' => 'fas fa-list-alt',
+        ],
+              
     ],
 
     /*

@@ -5,20 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Areas extends Model
+class Alumno extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'Nombre',
-        'Descripcion',
+        'Programa_estudios',
+        'dni',
     ];
-
-    //app/models/Area.php
-    public function materiales()
-    {
-        return $this ->hasmany(material::class, 'area_id');
-    }
 
     public function prestamos()
     {
