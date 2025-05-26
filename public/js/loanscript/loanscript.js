@@ -1,102 +1,6 @@
-let materials = [];
-
-function addMaterial() {
-  const areaSelect = document.getElementById('area_id');
-  const materialSelect = document.getElementById('material_id');
-  const cantidadInput = document.getElementById('input_cantidad');
-  const estadoSelect = document.getElementById('input_estado');
-
-  const areaId = areaSelect.value;
-  const areaText = areaSelect.options[areaSelect.selectedIndex]?.text;
-  const materialId = materialSelect.value;
-  const materialText = materialSelect.options[materialSelect.selectedIndex]?.text;
-  const cantidad = parseInt(cantidadInput.value);
-  const estado = estadoSelect.value;
-
-  if (!areaId || !materialId || !cantidad || !estado) {
-    alert("Por favor, complete todos los campos del material.");
-    return;
-  }
-
-  // Verificar si ya existe
-  const existingIndex = materials.findIndex(item =>
-    item.area_id === areaId &&
-    item.material_id === materialId &&
-    item.estado === estado
-  );
-
-  if (existingIndex !== -1) {
-    materials[existingIndex].cantidad += cantidad;
-  } else {
-    const newItem = {
-      area_id: areaId,
-      area_nombre: areaText,
-      material_id: materialId,
-      material_nombre: materialText,
-      cantidad: cantidad,
-      estado: estado
-    };
-    materials.push(newItem);
-  }
-
-  renderMaterialsTable();
-  cantidadInput.value = '';
-  estadoSelect.value = 'prestado';
-}
-
-function renderMaterialsTable() {
-  const tbody = document.getElementById('materialsBody');
-  tbody.innerHTML = '';
-
-  if (materials.length === 0) {
-    tbody.innerHTML = '<tr class="text-center text-muted"><td colspan="5">No hay materiales añadidos.</td></tr>';
-    return;
-  }
-
-  materials.forEach((item, index) => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${item.area_nombre}</td>
-      <td>${item.material_nombre}</td>
-      <td class="text-center">
-          <span class="mx-2">${item.cantidad}</span>
-      </td>
-      <td>${item.estado}</td>
-      <td class="text-center">
-        <div class="btn-group me-2" role="group" aria-label="Ajustar cantidad">
-          <button type="button" class="btn btn-sm btn-outline-secondary" title="Restar" onclick="adjustQuantity(${index}, -1)">−</button>
-          <button type="button" class="btn btn-sm btn-outline-secondary mr-4" title="Sumar" onclick="adjustQuantity(${index}, 1)">+</button>
-        </div>
-        <button type="button" class="btn btn-sm btn-outline-danger" title="Eliminar material" onclick="removeMaterial(${index})">🗑</button>
-      </td>
-    `;
-    tbody.appendChild(row);
-  });
-}
-
-function removeMaterial(index) {
-  materials.splice(index, 1);
-  renderMaterialsTable();
-}
-
-function adjustQuantity(index, change) {
-  materials[index].cantidad += change;
-
-  if (materials[index].cantidad <= 0) {
-    if (confirm('¿Deseas eliminar este material de la lista?')) {
-      removeMaterial(index);
-      return;
-    } else {
-      materials[index].cantidad = 1;
-    }
-  }
-
-  renderMaterialsTable();
-}
-
-function prepareMaterialsBeforeSubmit() {
-  document.getElementById('materials_json').value = JSON.stringify(materials);
-}
+document.addEventListener('DOMContentLoaded', () => {
+    showMaterials(materials); // "usuarios" viene del script en la vista Blade
+});
 
 function loadMaterials(areaId) {
   const materialSelect = document.getElementById('material_id');
@@ -128,33 +32,131 @@ function loadMaterials(areaId) {
       });
 }
 
-function renderMaterials() {
-    const tableBody = document.getElementById('materialsBody');
-    tableBody.innerHTML = '';
+function showMaterials(materials) {
+    const tbody = document.querySelector('#materialsTable tbody');
 
-    if (materials.length === 0) {
-      tableBody.innerHTML = '<tr class="text-center text-muted"><td colspan="5">No hay materiales añadidos.</td></tr>';
-      return;
-    }
-
-    materials.forEach((item, index) => {
-      const area = areasList.find(a => a.id == item.area_id);
-      const material = materialsList.find(m => m.id == item.material_id);
-
-      const row = document.createElement('tr');
-      row.innerHTML = `
-          <td>${area ? area.nombre : 'Desconocido'}</td>
-          <td>${material ? material.nombre : 'Desconocido'}</td>
-          <td>${item.cantidad}</td>
-          <td>${item.estado}</td>
-          <td><button type="button" class="btn btn-danger btn-sm" onclick="removeMaterial(${index})">Eliminar</button></td>
-      `;
-      tableBody.appendChild(row);
+    materials.forEach(material => {
+        const fila = createAppendChild(material);
+        tbody.appendChild(fila);
     });
+}
+/**
+ * Crea una fila de tabla con los datos de un usuario
+ * @param {Object} material 
+ * @returns {HTMLElement}
+**/
 
-    updateMaterialsJson();
+function createAppendChild(material) {
+    const fila = document.createElement('tr');
+    fila.innerHTML = `
+        <td>${material.material_id}</td>
+        <td>${material.area_id}</td>
+        <td><span class="cantidad">${material.cantidad}</span></td>
+        <td>${material.estado}</td>
+        <td>
+          <button class="btn btn-secondary mr-1" onclick="addQuantity(this)">
+            <i class="fas fa-plus"></i>
+          </button>
+          <button class="btn btn-secondary mr-3" onclick="minusQuantity(this)">
+            <i class="fas fa-minus"></i>
+          </button>
+          <button class="btn btn-danger" onclick="removeMaterial(this)"><i class="fas fa-trash"></i></button>
+        </td>
+    `;
+    return fila;
 }
 
-function updateMaterialsJson() {
-    document.getElementById('materials_json').value = JSON.stringify(materials);
+function addQuantity(button){
+  const fila = button.closest('tr');
+  const cantidadSpan = fila.querySelector('.cantidad');
+  let cantidad = parseInt(cantidadSpan.textContent);
+  cantidad++;
+  cantidadSpan.textContent = cantidad;
+}
+
+function minusQuantity(button) {
+  const fila = button.closest('tr');
+  const cantidadSpan = fila.querySelector('.cantidad');
+  let cantidad = parseInt(cantidadSpan.textContent);
+  if (cantidad > 1) {
+    cantidad--;
+    cantidadSpan.textContent = cantidad;
+  }
+}
+
+function addMaterial() {
+    // Obtener valores de los inputs
+    const area_id = document.getElementById('area_id').value;
+    const material_id = document.getElementById('material_id').value;
+    const cantidadInput = document.getElementById('input_cantidad').value;
+    const estado = document.getElementById('input_estado').value;
+
+    // Validar que los campos obligatorios no estén vacíos
+    if (!area_id || !material_id || !cantidadInput) {
+        alert('Por favor, complete todos los campos.');
+        return;
+    }
+
+    const cantidad = parseInt(cantidadInput);
+    if (cantidad <= 0) {
+        alert('La cantidad debe ser mayor que 0.');
+        return;
+    }
+
+    // Crear objeto material con los datos del formulario
+    const material = {
+        material_id: material_id,
+        area_id: area_id,
+        cantidad: cantidad,
+        estado: estado
+    };
+
+    // Agregar o sumar material en la tabla
+    const tabla = document.getElementById('materialsTable').getElementsByTagName('tbody')[0];
+    const filas = tabla.getElementsByTagName('tr');
+
+    // Buscar si ya existe ese material con el mismo area
+    for (let i = 0; i < filas.length; i++) {
+        const celdas = filas[i].getElementsByTagName('td');
+        const filaMaterialId = celdas[0].textContent;
+        const filaAreaId = celdas[1].textContent;
+
+        if (filaMaterialId === material.material_id && filaAreaId === material.area_id) {
+            // Existe: sumar cantidades
+            const cantidadSpan = celdas[2].querySelector('.cantidad');
+            let cantidadActual = parseInt(cantidadSpan.textContent);
+            cantidadActual += material.cantidad;
+            cantidadSpan.textContent = cantidadActual;
+            return;
+        }
+    }
+
+    // Si no existe, crear una fila nueva
+    const fila = createAppendChild(material);
+    tabla.appendChild(fila);
+}
+
+function removeMaterial(button) {
+    const fila = button.closest('tr');
+    fila.remove();
+}
+
+function updateMaterialsField() {
+    const tabla = document.getElementById('materialsTable').getElementsByTagName('tbody')[0];
+    const filas = tabla.getElementsByTagName('tr');
+
+    const materiales = [];
+
+    for (let i = 0; i < filas.length; i++) {
+        const celdas = filas[i].getElementsByTagName('td');
+
+        materiales.push({
+            material_id: celdas[0].textContent.trim(),
+            area_id: celdas[1].textContent.trim(),
+            cantidad: parseInt(celdas[2].querySelector('.cantidad').textContent.trim()),
+            estado: celdas[3].textContent.trim(),
+        });
+    }
+    console.log('Materiales que se enviarán:', materiales); // debug
+    document.getElementById('materials_json').value = JSON.stringify(materiales);
 }

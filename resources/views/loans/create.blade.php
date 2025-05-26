@@ -18,7 +18,7 @@
     </div>
     @endif
 
-    <form method="POST" action="{{ route('loanSave') }}" onsubmit="prepareMaterialsBeforeSubmit()">
+    <form method="POST" action="{{ route('loanSave') }}" onsubmit="updateMaterialsField()">
         @csrf
 
         <div class="row">
@@ -107,6 +107,5 @@
         <button type="submit" class="btn btn-primary mt-3">Guardar préstamo</button>
     </form>
 </div>
-
-<script src="/js/loanscript/loanscript.js"></script>
+<script src="/js/loanscript/loanscriptmanager.js"></script>
 @endsection

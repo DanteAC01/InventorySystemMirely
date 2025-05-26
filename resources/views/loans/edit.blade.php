@@ -18,7 +18,7 @@
     </div>
     @endif
 
-    <form method="POST" action="{{ route('loanUpdate', $loan->id) }}" onsubmit="prepareMaterialsBeforeSubmit()">
+    <form method="POST" action="{{ route('loanUpdate', $loan->id) }}" onsubmit="updateMaterialsField()">
         @csrf
         @method('PUT')
 
@@ -50,7 +50,7 @@
         <div class="row align-items-end">
             <div class="col-3">
                 <label>Aula:</label>
-                <select class="form-control" id="area_id" onchange="loadMaterials(this.value)" required>
+                <select class="form-control" id="area_id" onchange="loadMaterials(this.value)">
                     <option value="">Seleccione un aula</option>
                     @foreach($classroomsData as $area)
                         <option value="{{ $area->id }}">{{ $area->nombre }}</option>
@@ -60,19 +60,19 @@
 
             <div class="col-3">
                 <label>Material:</label>
-                <select class="form-control" id="material_id" required>
+                <select class="form-control" id="material_id">
                     <option value="">Seleccione un material</option>
                 </select>
             </div>
 
             <div class="col-2">
                 <label>Cantidad:</label>
-                <input type="number" id="input_cantidad" class="form-control" value="1" min="1" required>
+                <input type="number" id="input_cantidad" class="form-control" value="1" min="1">
             </div>
 
             <div class="col-3">
                 <label>Estado:</label>
-                <select class="form-control" id="input_estado" required>
+                <select class="form-control" id="input_estado">
                     <option value="prestado">Prestado</option>
                     <option value="devuelto">Devuelto</option>
                     <option value="pendiente">Pendiente</option>
@@ -90,8 +90,6 @@
         <table class="table table-bordered" id="materialsTable">
             <thead class="table-dark">
                 <tr>
-                    <th>ID</th>
-                    <th>ID prestamo</th>
                     <th>Material</th>
                     <th>Aula</th>
                     <th>Cantidad</th>
@@ -99,24 +97,18 @@
                     <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody id="materialsBody">
-               @foreach ($prestamoMaterialData as $data)
-                <tr>
-                    <th>{{ $data->id }}</th>
-                    <th>{{ $data->prestamo_id }}</th>
-                    <th>{{ $data->material->nombre }}</th>
-                    <th>{{ $data->area->nombre }}</th>
-                    <th>{{ $data->cantidad }}</th>
-                    <th>{{ $data->estado }}</th>
-                </tr>
-               @endforeach
+            <tbody>
+
             </tbody>
         </table>
 
         <input type="hidden" name="materials_json" id="materials_json">
 
-        <button type="submit" class="btn btn-primary mt-3">Actualizar préstamo</button>
+        <button type="" class="btn btn-primary mt-3">Actualizar préstamo</button>
     </form>
 </div>
+<script>
+    window.materials = @json($prestamoMaterialData);
+</script>
 <script src="/js/loanscript/loanscript.js"></script>
 @endsection
