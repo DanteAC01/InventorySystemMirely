@@ -18,7 +18,7 @@
     </div>
     @endif
 
-    <form method="POST" action="{{ route('loanSave') }}" onsubmit="updateMaterialsField()">
+    <form method="POST" id="formSaveID" action="{{ route('loanSave') }}" onsubmit="updateMaterialsField()">
         @csrf
 
         <div class="row">
@@ -107,5 +107,12 @@
         <button type="submit" class="btn btn-primary mt-3">Guardar préstamo</button>
     </form>
 </div>
+<div class="container">
+    <div class="overlay center" id="loader" style="display: none;">
+        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+    </div>
+</div>
+
+<script src="/js/loanscript/loader.js"></script>
 <script src="/js/loanscript/loanscriptmanager.js"></script>
 @endsection

@@ -3,13 +3,13 @@
 @section('title', 'Nuevo ingreso | IDEX PERÚ JAPÓN')
 
 @section('content_header')
- <h1>Lista de areas</h1>
+ <h1>Agregar un nuevo material</h1>
 @stop
 
 @section('content')
- <div class="container-fluid">
-    <form method="POST" action="{{ route('materialSave') }}">
-      @csrf
+    <div class="container-fluid">
+    <form method="POST" id="formSaveID" action="{{ route('materialSave') }}">
+        @csrf
         <div class="row">
             <div class="mb-3 col-3">
                 <label for="nombre" class="form-label">Nombre:</label>
@@ -55,7 +55,14 @@
             </div>
         </div>
 
-      <button type="submit" class="btn btn-primary">Guardar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
     </form>
- </div>
+    </div>
+    <div class="container">
+        <div class="overlay center" id="loader" style="display: none;">
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>
+    </div>
+
+    <script src="/js/loanscript/loader.js"></script>
 @stop
