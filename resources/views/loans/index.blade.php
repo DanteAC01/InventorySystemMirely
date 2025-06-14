@@ -3,7 +3,7 @@
 @section('title', 'Lista de préstamos | IDEX PERÚ JAPÓN')
 
 @section('content_header')
-  <h1>Lista de préstamos</h1>
+  <h1>Registro de movimientos</h1>
 @stop
 
 @section('content')

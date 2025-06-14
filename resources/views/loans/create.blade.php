@@ -22,11 +22,18 @@
         @csrf
 
         <div class="row">
-            <div class="mb-3 col-4">
-                <label>Alumno:</label>
+            <div class="mb-3 col-3">
+                <label>Usuario:</label>
+                @foreach ($users as $user)
+                    <input type="text"  class="form-control" value="{{ $user->name}}" disabled>
+                @endforeach
+            </div>
+            
+            <div class="mb-3 col-3">
+                <label>Área:</label>
                 <select name="alumno_id" class="form-control" required>
-                    @foreach ($alumnosData as $alumnoData)
-                        <option value="{{ $alumnoData->id }}" {{ old('alumno_id') == $alumnoData->id ? 'selected' : '' }}> {{ $alumnoData->Nombre}} - {{$alumnoData->dni}}
+                    @foreach ($classroomsData as $classroomData)
+                        <option value="{{ $classroomData->id }}" {{ old('classroom_id') == $user->id ? 'selected' : '' }}> {{ $classroomData->nombre}}
                     @endforeach
                 </select>
             </div>
