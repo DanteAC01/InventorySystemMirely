@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Material;
-use App\Models\Area;
+use App\Models\Sector;
 
 use Illuminate\Http\Request;
 
@@ -13,7 +13,7 @@ class MarterialeController extends Controller
      */
     public function index()
     {
-        $classroomDataMaterial = Area::withCount('materiales')->get(); // asumiendo relación 'materiales'
+        $classroomDataMaterial = Sector::withCount('materials')->get(); // asumiendo relación 'materiales'
 
         return view('material.index', compact('classroomDataMaterial'));
     }
@@ -24,7 +24,7 @@ class MarterialeController extends Controller
     public function create()
     {
         //
-        $classroomData = Area::all();
+        $classroomData = Sector::all();
 
         return view('material.create', compact('classroomData'));
     }

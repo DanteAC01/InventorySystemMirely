@@ -345,7 +345,7 @@ return [
         ],  
         ['header' => 'Prestamos'],
         [
-            'text' => 'Lista de prestamos',
+            'text' => 'Registro de Traslados',
             'url' => 'loanList',
             'icon' => 'fas fa-list-alt',
         ],

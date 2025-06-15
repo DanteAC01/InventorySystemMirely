@@ -24,16 +24,14 @@
         <div class="row">
             <div class="mb-3 col-3">
                 <label>Usuario:</label>
-                @foreach ($users as $user)
-                    <input type="text"  class="form-control" value="{{ $user->name}}" disabled>
-                @endforeach
+                    <input type="text" name="alumno_id" class="form-control" value="{{ auth()->user()->name }}" disabled>
             </div>
             
             <div class="mb-3 col-3">
                 <label>Área:</label>
-                <select name="alumno_id" class="form-control" required>
+                <select name="" class="form-control" required>
                     @foreach ($classroomsData as $classroomData)
-                        <option value="{{ $classroomData->id }}" {{ old('classroom_id') == $user->id ? 'selected' : '' }}> {{ $classroomData->nombre}}
+                        <option value="{{ $classroomData->id }}" {{ old('classroom_id') == $classroomData->id ? 'selected' : '' }}> {{ $classroomData->nombre}}
                     @endforeach
                 </select>
             </div>

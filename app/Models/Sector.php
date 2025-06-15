@@ -5,18 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Alumno extends Model
+class Sector extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'Nombre',
-        'Programa_estudios',
-        'dni',
+        'nombre',
     ];
 
-    public function prestamos()
+    public function materials()
     {
-        return $this->hasMany(Prestamo::class);
+        return $this->hasMany(Material::class);
     }
+
 }

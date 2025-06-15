@@ -12,14 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::create('alumnos', function (Blueprint $table) {
+        Schema::create('materials', function (Blueprint $table) {
             $table->id();
-            $table->string('Nombre');
-            $table->string('Programa_estudios');
-            $table->string('dni')->unique();
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->integer('quantity');
+            $table->string('status')->default('activo');
+            $table->foreignId('sector_id')->constrained('sectors');
             $table->timestamps();
         });
-
     }
 
     /**

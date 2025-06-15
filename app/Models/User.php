@@ -47,8 +47,8 @@ class User extends Authenticatable
     }
 
     
-    public function prestamos()
+    public function movements()
     {
-        return $this->hasMany(Prestamo::class);
+        return $this->hasMany(Movements::class);
     }
 }
