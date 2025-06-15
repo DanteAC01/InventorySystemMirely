@@ -9,6 +9,16 @@ class Material extends Model
 {    
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'description',
+        'quantity',
+        'quantityAvailable',
+        'status',
+        'sector_id',
+        'dateEntry'
+    ];
+
     // app/models/materiales.php
     public function sector()
     {

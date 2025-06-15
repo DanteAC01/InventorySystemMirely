@@ -12,8 +12,8 @@ class AreaController extends Controller
      */
     public function index()
     {   
-        $SectorsData = Sector::all();
-        return view('classroom.index', compact('SectorsData'));
+        $sectorsData = Sector::all();
+        return view('classroom.index', compact('sectorsData'));
     }
 
     /**
@@ -30,7 +30,7 @@ class AreaController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nombre' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
         ]);
 
         Sector::create($validated);
@@ -52,9 +52,9 @@ class AreaController extends Controller
      */
     public function edit(string $id)
     {
-        $classroom = Sector::findOrFail($id); // Lanza 404 si no encuentra el registro
+        $sectorData = Sector::findOrFail($id); // Lanza 404 si no encuentra el registro
 
-        return view('classroom.edit', compact('classroom'));
+        return view('classroom.edit', compact('sectorData'));
     }
 
     /**
@@ -64,7 +64,7 @@ class AreaController extends Controller
     {
         // Validación de datos
         $request->validate([
-            'nombre' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
         ]);
 
         // Buscar y actualizar

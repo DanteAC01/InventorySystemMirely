@@ -17,8 +17,10 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->integer('quantity');
+            $table->integer('quantityAvailable');
             $table->string('status')->default('activo');
             $table->foreignId('sector_id')->constrained('sectors');
+            $table->date('dateEntry');
             $table->timestamps();
         });
     }

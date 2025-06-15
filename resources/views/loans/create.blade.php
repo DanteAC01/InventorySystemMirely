@@ -24,14 +24,14 @@
         <div class="row">
             <div class="mb-3 col-3">
                 <label>Usuario:</label>
-                    <input type="text" name="alumno_id" class="form-control" value="{{ auth()->user()->name }}" disabled>
+                    <input type="text" name="user" class="form-control" value="{{ auth()->user()->name }}" disabled>
             </div>
             
             <div class="mb-3 col-3">
                 <label>Área:</label>
                 <select name="" class="form-control" required>
-                    @foreach ($classroomsData as $classroomData)
-                        <option value="{{ $classroomData->id }}" {{ old('classroom_id') == $classroomData->id ? 'selected' : '' }}> {{ $classroomData->nombre}}
+                    @foreach ($sectorsData as $sectorData)
+                        <option value="{{ $sectorData->id }}" {{ old('classroom_id') == $sectorData->id ? 'selected' : '' }}> {{ $sectorData->nombre}}
                     @endforeach
                 </select>
             </div>
@@ -54,8 +54,8 @@
                 <label>Aula:</label>
                 <select class="form-control" id="area_id" onchange="loadMaterials(this.value)" required>
                     <option value="">Seleccione un aula</option>
-                    @foreach($classroomsData as $area)
-                        <option value="{{ $area->id }}">{{ $area->nombre }}</option>
+                    @foreach($sectorsData as $sector)
+                        <option value="{{ $sector->id }}">{{ $sector->name }}</option>
                     @endforeach
                 </select>
             </div>

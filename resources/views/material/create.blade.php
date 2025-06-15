@@ -12,19 +12,19 @@
         @csrf
         <div class="row">
             <div class="mb-3 col-3">
-                <label for="nombre" class="form-label">Nombre:</label>
-                <input type="text" name="nombre" class="form-control" required>
+                <label for="name" class="form-label">Nombre:</label>
+                <input type="text" name="name" class="form-control" required>
             </div>
 
-            <div class="mb-3 col-1">
-                <label for="total" class="form-label">Cantidad Total:</label>
-                <input type="number" name="total" class="form-control" required>
+            <div class="col-1">
+                <label for="quantity" class="form-label">Cantidad:</label>
+                <input type="number" name="quantity" class="form-control" required>
             </div>
             
 
             <div class="mb-3 col-3">
                 <label for="estado" class="form-label">Estado:</label>
-                <select name="estado" class="form-control" required>
+                <select name="statusMaterial" class="form-control" required>
                     <option value="">-- Selecciona un estado --</option>
                     <option value="nuevo">Nuevo</option>
                     <option value="usado">Usado</option>
@@ -35,21 +35,21 @@
             </div>
 
             <div class="mb-3 col-2">
-                <label for="fecha_ingreso" class="form-label">Fecha de Ingreso:</label>
-                <input type="date" name="fecha_ingreso" class="form-control" required>
+                <label for="dateEntry" class="form-label">Fecha de Ingreso:</label>
+                <input type="date" name="dateEntry" class="form-control" required>
             </div>
         </div>
         <div class="row">
             <div class="mb-3 col-6">
-                <label for="descripcion" class="form-label">Descripción:</label>
-                <input type="text" name="descripcion" class="form-control" required>
+                <label for="description" class="form-label">Descripción:</label>
+                <input type="text" name="description" class="form-control" required>
             </div>
 
             <div class="mb-3 col-2">
-                <label for="area_id" class="form-label">Área:</label>
-                <select name="area_id" class="form-control" required>
-                    @foreach ($classroomData as $classroom)
-                        <option value="{{ $classroom->id }}">{{ $classroom->nombre }}</option>
+                <label for="sectorID" class="form-label">Área:</label>
+                <select name="sectorID" class="form-control" required>
+                    @foreach ($sectorData as $sector)
+                        <option value="{{ $sector->id }}">{{ $sector->name }}</option>
                     @endforeach
                 </select>
             </div>

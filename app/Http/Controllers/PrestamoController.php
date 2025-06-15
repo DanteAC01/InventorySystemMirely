@@ -21,7 +21,7 @@ class PrestamoController extends Controller
     public function index()
     {
         // Trae todos los préstamos con las relaciones cargadas
-        $loansDataList = Movement::with(['user', 'alumno', 'prestamoMateriales.material.area'])->get();
+        $loansDataList = Movement::with(['user', 'alumno', 'prestamoMateriales.materials.sector'])->get();
 
         // Retorna la vista y pasa los datos   
         return view('loans.index', compact('loansDataList'));
@@ -35,14 +35,14 @@ class PrestamoController extends Controller
         //
         $users = User::all();
         $materialsData = Material::all();
-        $classroomsData = Sector::all(); // Agregamos las áreas
+        $sectorsData = Sector::all(); // Agregamos las áreas
 
-        return view('loans.create', compact('materialsData', 'classroomsData','users',));
+        return view('loans.create', compact('materialsData', 'sectorsData','users',));
     }
     
-    public function materialsByClassroom($classroom)
+    public function materialsByClassroom($sector)
     {
-        $materials = Material::where('area_id', $classroom)->get();
+        $materials = Material::where('sector_id', $sector)->get();
         return response()->json($materials);
     }
 

@@ -10,7 +10,7 @@ class Sector extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nombre',
+        'name',
     ];
 
     public function materials()
