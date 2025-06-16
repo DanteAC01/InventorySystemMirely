@@ -28,7 +28,7 @@ Route::middleware(['auth'])->group(function () {
 
   Route::get('/loanList', [App\Http\Controllers\PrestamoController::class, 'index'])->name('loanList');
   Route::get('/loanCreate', [App\Http\Controllers\PrestamoController::class, 'create'])->name('loanCreate');
-  Route::get('/materialsByClassroom/{classroom}', [App\Http\Controllers\PrestamoController::class, 'materialsByClassroom']);
+  Route::get('/materialsByClassroom/{sector}', [App\Http\Controllers\PrestamoController::class, 'materialsByClassroom']);
   Route::post('/loanSave', [App\Http\Controllers\PrestamoController::class, 'store'])->name('loanSave');
   Route::get('/loanEdit/{id}', [App\Http\Controllers\PrestamoController::class, 'edit'])->name('loanEdit');
   Route::put('/loanUpdate/{id}', [App\Http\Controllers\PrestamoController::class, 'update'])->name('loanUpdate');

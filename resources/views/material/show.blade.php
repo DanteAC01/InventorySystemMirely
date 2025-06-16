@@ -17,7 +17,7 @@
 <div class="container-fluid">
     <h4>Bienes y materiales del area:</h4>
 
-    @if($va->materiales->isEmpty())
+    @if($va->materials->isEmpty())
         <p>No hay materiales registrados para esta área.</p>
     @else
         <table class="table table-bordered table-hover">
@@ -29,20 +29,20 @@
                     <th>cantidad disponible</th>
                     <th>estado</th>
                     <th>fecha ingreso</th>
-                    <th>Area</th>
+                    <th>Área</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($va->materiales as $material)
+                @foreach($va->materials as $material)
                     <tr>
                         <td>{{ $material->id }}</td>
-                        <td>{{ $material->nombre }}</td>
-                        <td>{{ $material->total}}</td>
-                        <td>{{ $material->cantidad_disponible}}</td>
-                        <td>{{ $material->estado}}</td>
-                        <td>{{ $material->fecha_ingreso}}</td>
-                        <td>{{ $material->area->nombre}}</td>
+                        <td>{{ $material->name }}</td>
+                        <td>{{ $material->quantity}}</td>
+                        <td>{{ $material->quantityAvailable}}</td>
+                        <td>{{ $material->status}}</td>
+                        <td>{{ $material->dateEntry}}</td>
+                        <td>{{ $material->sector->name}}</td>
                         <td>
                             <a href="{{ route('materialEdit', $material->id) }}" class="btn btn-sm btn-secondary">Editar</a>
 

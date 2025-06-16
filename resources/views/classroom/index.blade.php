@@ -24,10 +24,10 @@
     </tr>
   </thead>
   <tbody>
-    @foreach ($classroomDataList as $data)
+    @foreach ($SectorsData as $data)
       <tr>
         <td>{{ $data->id }}</td>
-        <td>{{ $data->nombre }}</td>
+        <td>{{ $data->name }}</td>
         <td>
           <a href="{{ route('classroomEdit', $data->id) }}" class="btn btn-sm btn-secondary">Editar</a>
 

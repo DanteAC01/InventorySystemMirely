@@ -3,7 +3,7 @@
 @section('title', 'Lista de areas | IDEX PERÚ JAPÓN')
 
 @section('content_header')
- <h1>Nueva aula</h1>
+ <h1>Nueva área</h1>
 @stop
 
 @section('content')
@@ -11,8 +11,8 @@
         <form action="{{ route('classroomSave') }}" id="formSaveID" method="POST">
             @csrf         
             <div class="mb-3 col-4">
-                <label for="nombre" class="form-label">Nombre del Área</label>
-                <input type="text" name="nombre" class="form-control" id="nombre" required>
+                <label for="name" class="form-label">Nombre</label>
+                <input type="text" name="name" class="form-control" id="name" required>
             </div>
 
             <button type="submit" id="btnGuardar" class="btn btn-success">Guardar</button>

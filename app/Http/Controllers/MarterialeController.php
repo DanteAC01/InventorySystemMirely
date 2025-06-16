@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Material;
-use App\Models\Area;
+use App\Models\Sector;
 
 use Illuminate\Http\Request;
 
@@ -13,9 +13,9 @@ class MarterialeController extends Controller
      */
     public function index()
     {
-        $classroomDataMaterial = Area::withCount('materiales')->get(); // asumiendo relación 'materiales'
+        $sectorDataMaterial = Sector::withCount('materials')->get(); // asumiendo relación 'materiales'
 
-        return view('material.index', compact('classroomDataMaterial'));
+        return view('material.index', compact('sectorDataMaterial'));
     }
 
     /**
@@ -24,9 +24,9 @@ class MarterialeController extends Controller
     public function create()
     {
         //
-        $classroomData = Area::all();
+        $sectorData = Sector::all();
 
-        return view('material.create', compact('classroomData'));
+        return view('material.create', compact('sectorData'));
     }
 
     /**
@@ -35,17 +35,23 @@ class MarterialeController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'descripcion' => 'required|string',
-            'total' => 'required|integer|min:0',
-            'estado' => 'required|in:nuevo,usado,deteriorado,en reparación,dado de baja',
-            'fecha_ingreso' => 'required|date',
-            'area_id' => 'required|exists:areas,id',
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'quantity' => 'required|integer|min:0',
+            'statusMaterial' => 'required|in:nuevo,usado,deteriorado,en reparación,dado de baja',
+            'dateEntry' => 'required|date',
+            'sectorID' => 'required|exists:sectors,id',
         ]);
 
-        $validated['cantidad_disponible'] = $validated['total'];
-        Material::create($validated);
+        // Mapeo de campos personalizados al modelo
+        $validated['status'] = $validated['statusMaterial'];
+        $validated['sector_id'] = $validated['sectorID'];
+        $validated['quantityAvailable'] = $validated['quantity'];
 
+        // Elimina los campos que no existen en la tabla
+        unset($validated['statusMaterial'], $validated['sectorID']);
+
+        Material::create($validated);
 
         return redirect()->route('materialList')->with('success', 'Material registrado correctamente.');
     }
@@ -56,7 +62,7 @@ class MarterialeController extends Controller
     public function show(string $id)
     {
         // Carga el área con todos sus materiales relacionados
-        $va = Area::with('materiales.area')->findOrFail($id); // también cargamos la relación inversa 'area'
+        $va = Sector::with('materials.sector')->findOrFail($id); // también cargamos la relación inversa 'area'
 
         $areaNombre = $va->nombre;
 

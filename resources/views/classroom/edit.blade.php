@@ -8,12 +8,12 @@
 
 @section('content')
  <div class="container-fluid">
-    <form action="{{ route('classroomUpdate', $classroom->id) }}" method="POST">
+    <form action="{{ route('classroomUpdate', $sectorData->id) }}" method="POST">
         @csrf
         @method('PUT')   
         <div class="mb-3 col-4">
-            <label for="nombre" class="form-label">Nombre del Área</label>
-            <input type="text" name="nombre" class="form-control" id="nombre" value="{{ $classroom->nombre}}" required>
+            <label for="name" class="form-label">Nombre del Área</label>
+            <input type="text" name="name" class="form-control" id="name" value="{{ $sectorData->name}}" required>
         </div>
 
         <button type="submit" class="btn btn-success">Guardar</button>

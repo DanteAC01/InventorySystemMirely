@@ -39,7 +39,7 @@
      </div>
      <div class="row">
       <div class="mb-3 col-6">
-       <label for="descripcion" class="form-label">Observaciones:</label>
+       <label for="descripcion" class="form-label">Descripción:</label>
        <input type="text" name="descripcion" class="form-control" value="{{ old('descripcion', $material->descripcion) }}" required>
       </div>
 

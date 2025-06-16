@@ -8,25 +8,25 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Material extends Model
 {    
     use HasFactory;
-    
+
     protected $fillable = [
-        'nombre',
-        'descripcion',
-        'total',
-        'cantidad_disponible',
-        'estado',
-        'fecha_ingreso',
-        'area_id',
+        'name',
+        'description',
+        'quantity',
+        'quantityAvailable',
+        'status',
+        'sector_id',
+        'dateEntry'
     ];
 
     // app/models/materiales.php
-    public function area()
+    public function sector()
     {
-        return $this->belongsTo(Areas::class, 'area_id');
+        return $this->belongsTo(Sector::class);
     }
-    
-    public function prestamos()
+
+    public function movementDetails()
     {
-        return $this->hasMany(Prestamo::class);
+        return $this->hasMany(MovementDetail::class);
     }
 }

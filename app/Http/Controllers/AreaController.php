@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Area;
+use App\Models\Sector;
 
 use Illuminate\Http\Request;
 
@@ -12,8 +12,8 @@ class AreaController extends Controller
      */
     public function index()
     {   
-        $classroomDataList = Area::all();
-        return view('classroom.index', compact('classroomDataList'));
+        $sectorsData = Sector::all();
+        return view('classroom.index', compact('sectorsData'));
     }
 
     /**
@@ -30,10 +30,10 @@ class AreaController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nombre' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
         ]);
 
-        Area::create($validated);
+        Sector::create($validated);
 
         // Redireccionar con mensaje de éxito
         return redirect()->route('classroomList')->with('success', 'Área creada correctamente.');
@@ -52,9 +52,9 @@ class AreaController extends Controller
      */
     public function edit(string $id)
     {
-        $classroom = Area::findOrFail($id); // Lanza 404 si no encuentra el registro
+        $sectorData = Sector::findOrFail($id); // Lanza 404 si no encuentra el registro
 
-        return view('classroom.edit', compact('classroom'));
+        return view('classroom.edit', compact('sectorData'));
     }
 
     /**
@@ -64,7 +64,7 @@ class AreaController extends Controller
     {
         // Validación de datos
         $request->validate([
-            'nombre' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
         ]);
 
         // Buscar y actualizar

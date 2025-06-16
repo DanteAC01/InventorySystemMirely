@@ -23,7 +23,7 @@ function loadMaterials(areaId) {
 
           materialSelect.innerHTML = '<option value="">Seleccione un material</option>';
           data.forEach(material => {
-              materialSelect.innerHTML += `<option value="${material.id}">${material.nombre}</option>`;
+              materialSelect.innerHTML += `<option value="${material.id}">${material.name}</option>`;
           });
       })
       .catch(error => {

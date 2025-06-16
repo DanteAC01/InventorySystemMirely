@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Prestamo;
+use App\Models\Movement;
 use App\Models\Material;
-use App\Models\Alumno;
 use App\Models\User;
-use App\Models\Area;
+use App\Models\Sector;
 use Illuminate\Http\Request;
-use App\Models\PrestamoMaterial;
+use App\Models\MovementDetail;
 use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +21,7 @@ class PrestamoController extends Controller
     public function index()
     {
         // Trae todos los préstamos con las relaciones cargadas
-        $loansDataList = Prestamo::with(['user', 'alumno', 'prestamoMateriales.material.area'])->get();
+        $loansDataList = Movement::with(['user', 'alumno', 'prestamoMateriales.materials.sector'])->get();
 
         // Retorna la vista y pasa los datos   
         return view('loans.index', compact('loansDataList'));
@@ -36,15 +35,14 @@ class PrestamoController extends Controller
         //
         $users = User::all();
         $materialsData = Material::all();
-        $classroomsData = Area::all(); // Agregamos las áreas
-        $alumnosData = Alumno::all();
+        $sectorsData = Sector::all(); // Agregamos las áreas
 
-        return view('loans.create', compact('materialsData', 'classroomsData','users','alumnosData'));
+        return view('loans.create', compact('materialsData', 'sectorsData','users',));
     }
     
-    public function materialsByClassroom($classroom)
+    public function materialsByClassroom($sector)
     {
-        $materials = Material::where('area_id', $classroom)->get();
+        $materials = Material::where('sector_id', $sector)->get();
         return response()->json($materials);
     }
 
@@ -54,7 +52,6 @@ class PrestamoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'alumno_id' => 'required|exists:alumnos,id',
             'fecha_prestamo' => 'required|date',
             'fecha_devolucion' => 'nullable|date|after_or_equal:fecha_prestamo',
             'observaciones' => 'nullable|string',
@@ -62,7 +59,6 @@ class PrestamoController extends Controller
 
         $prestamo = Prestamo::create([
             'user_id' => Auth::id(),
-            'alumno_id' => $request->alumno_id,
             'fecha_prestamo' => $request->fecha_prestamo,
             'fecha_devolucion' => $request->fecha_devolucion,
             'observaciones' => $request->observaciones ?? null,
@@ -86,7 +82,7 @@ class PrestamoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Prestamo $prestamos)
+    public function show(Movement $prestamos)
     {
         //
     }
@@ -99,7 +95,7 @@ class PrestamoController extends Controller
     {
         $loan = Prestamo::findOrFail($id);
         $alumnosData = Alumno::all();
-        $classroomsData = Area::all();
+        $classroomsData = Sector::all();
         $materialsData = Material::all();
         $prestamoMaterialData = $loan->prestamoMateriales;
         return view('loans.edit', compact('loan', 'alumnosData', 'classroomsData', 'materialsData', 'prestamoMaterialData'));
@@ -165,7 +161,7 @@ class PrestamoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Prestamo $prestamos)
+    public function destroy(Movement $prestamos)
     {
         //
     }

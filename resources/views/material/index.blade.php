@@ -15,16 +15,16 @@
 
  <div class="container-fluid">
   <div class="row">
-    @foreach ($classroomDataMaterial as $data)
+    @foreach ($sectorDataMaterial as $data)
       <div class="col-md-4 mb-4">
         <a href="{{ route('materialShow', $data->id) }}" class="text-decoration-none text-dark">
           <div class="card border-primary shadow-sm h-100">
             <div class="card-header">
-              <h2 class="card-title">{{ $data->nombre }}</h2>
+              <h2 class="card-title">{{ $data->name }}</h2>
             </div>
             <div class="card-body">
               <p class="card-text">
-                <strong>{{ $data->materiales_count }}</strong> tipos materiales registrados
+                <strong>{{ $data->materials_count }}</strong> tipos materiales registrados
               </p>
             </div>
             <div class="card-footer bg-primary text-white text-center">
