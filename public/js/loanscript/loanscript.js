@@ -2,34 +2,37 @@ document.addEventListener('DOMContentLoaded', () => {
     showMaterials(materials); // "usuarios" viene del script en la vista Blade
 });
 
-function loadMaterials(areaId) {
+function loadMaterials(sector) {
   const materialSelect = document.getElementById('material_id');
   materialSelect.innerHTML = '<option value="">Cargando...</option>';
+  console.log('Sector seleccionado:', sector);
 
-  if (!areaId) {
-      materialSelect.innerHTML = '<option value="">Seleccione un aula primero</option>';
-      return;
+  if (!sector) {
+    materialSelect.innerHTML = '<option value="">Seleccione un aula primero</option>';
+    return;
   }
 
-  fetch(`/materialsByClassroom/${areaId}`)
-      .then(response => response.json())
-      .then(data => {
-          materialSelect.innerHTML = '';
+  fetch(`/materialsByClassroom/${sector}`)
+    .then(response => response.json())
+    .then(data => {
+        console.log('Datos recibidos del backend:', data);
+        materialSelect.innerHTML = '';
 
-          if (data.length === 0) {
-              materialSelect.innerHTML = '<option value="">No hay materiales para esta aula</option>';
-              return;
-          }
+        if (data.length === 0) {
+            materialSelect.innerHTML = '<option value="">No hay materiales para esta aula</option>';
+            return;
+        }
 
-          materialSelect.innerHTML = '<option value="">Seleccione un material</option>';
-          data.forEach(material => {
-              materialSelect.innerHTML += `<option value="${material.id}">${material.name}</option>`;
-          });
-      })
-      .catch(error => {
-          console.error('Error cargando materiales:', error);
-          materialSelect.innerHTML = '<option value="">Error al cargar materiales</option>';
-      });
+        materialSelect.innerHTML = '<option value="">Seleccione un material</option>';
+        data.forEach(material => {
+            console.log('Material:', material); 
+            materialSelect.innerHTML += `<option value="${material.id}">${material.name}</option>`;
+        });
+    })
+    .catch(error => {
+        console.error('Error cargando materiales:', error);
+        materialSelect.innerHTML = '<option value="">Error al cargar materiales</option>';
+    });
 }
 
 function showMaterials(materials) {

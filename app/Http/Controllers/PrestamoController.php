@@ -42,13 +42,10 @@ class PrestamoController extends Controller
     
     public function materialsByClassroom($sector)
     {
-        $materials = Material::where('sector_id', $sector)->get();
+        $materials = Material::where('sector_id', $sector)->select('id', 'name')->get();
         return response()->json($materials);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -57,7 +54,7 @@ class PrestamoController extends Controller
             'observaciones' => 'nullable|string',
         ]);
 
-        $prestamo = Prestamo::create([
+        $prestamo = Movement::create([
             'user_id' => Auth::id(),
             'fecha_prestamo' => $request->fecha_prestamo,
             'fecha_devolucion' => $request->fecha_devolucion,
@@ -67,10 +64,10 @@ class PrestamoController extends Controller
         $materials = json_decode($request->materials_json, true);
 
         foreach ($materials as $material) {
-            PrestamoMaterial::create([
+            MovementDetail::create([
                 'prestamo_id' => $prestamo->id,
                 'material_id' => $material['material_id'],
-                'area_id' => $material['area_id'],
+                'destinationSector' => $material['destinationSector'],
                 'cantidad' => $material['cantidad'],
                 'estado' => $material['estado'],
             ]);
@@ -93,8 +90,7 @@ class PrestamoController extends Controller
     
     public function edit($id)
     {
-        $loan = Prestamo::findOrFail($id);
-        $alumnosData = Alumno::all();
+        $loan = Movement::findOrFail($id);
         $classroomsData = Sector::all();
         $materialsData = Material::all();
         $prestamoMaterialData = $loan->prestamoMateriales;
@@ -132,7 +128,7 @@ class PrestamoController extends Controller
         }
 
         // Actualizar el préstamo
-        $loan = Prestamo::findOrFail($id);
+        $loan = Movement::findOrFail($id);
         $loan->update([
             'alumno_id' => $request->alumno_id,
             'fecha_prestamo' => $request->fecha_prestamo,
@@ -145,7 +141,7 @@ class PrestamoController extends Controller
 
         // Crear los nuevos materiales
         foreach ($materiales as $material) {
-            PrestamoMaterial::create([
+            MovementDetails::create([
                 'prestamo_id' => $loan->id,
                 'material_id' => $material['material_id'],
                 'area_id' => $material['area_id'],
