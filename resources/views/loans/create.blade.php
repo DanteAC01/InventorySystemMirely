@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="mb-3 col-3">
-                    <label>Fecha Préstamo:</label>
+                    <label>Fecha Traslado:</label>
                     <input type="date" name="fecha_prestamo" class="form-control" value="{{ old('fecha_prestamo') }}" required>
                 </div>
 
@@ -107,7 +107,7 @@
             <!-- Hidden field for JSON data -->
             <input type="hidden" name="materials_json" id="materials_json">
 
-            <button type="submit" class="btn btn-primary mt-3">Guardar préstamo</button>
+            <button type="submit" class="btn btn-primary mt-3">Guardar</button>
         </form>
     </div>
     <div class="container">

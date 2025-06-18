@@ -53,14 +53,14 @@ function createAppendChild(material) {
     const fila = document.createElement('tr');
     fila.innerHTML = `
         <td>${material.material_id}</td>
-        <td>${material.area_id}</td>
-        <td><span class="cantidad">${material.cantidad}</span></td>
-        <td>${material.estado}</td>
+        <td>${material.material_nombre}</td>
+        <td><span class="cantidad">${material.quantity}</span></td>
+        <td>${material.status}</td>
         <td>
-          <button class="btn btn-secondary mr-1" onclick="addQuantity(this)">
+          <button type="button" class="btn btn-secondary mr-1" onclick="addQuantity(this)">
             <i class="fas fa-plus"></i>
           </button>
-          <button class="btn btn-secondary mr-3" onclick="minusQuantity(this)">
+          <button type="button" class="btn btn-secondary mr-3" onclick="minusQuantity(this)">
             <i class="fas fa-minus"></i>
           </button>
           <button class="btn btn-danger" onclick="removeMaterial(this)"><i class="fas fa-trash"></i></button>
@@ -156,7 +156,7 @@ function updateMaterialsField() {
         materiales.push({
             material_id: celdas[0].textContent.trim(),
             area_id: celdas[1].textContent.trim(),
-            cantidad: parseInt(celdas[2].querySelector('.cantidad').textContent.trim()),
+            cantidad: parseInt(celdas[2].querySelector('.quantity').textContent.trim()),
             estado: celdas[3].textContent.trim(),
         });
     }

@@ -25,12 +25,12 @@
         <div class="row">
             <div class="mb-3 col-4">
                 <label>Usuario:</label>
-                <input type="date" name="fecha_prestamo" class="form-control" value="{{ auth()->user()->name }}" required>
+                <input type="text" name="fecha_prestamo" class="form-control" value="{{ auth()->user()->name }}" required disabled>
             </div>
 
             <div class="mb-3 col-3">
-                <label>Fecha Préstamo:</label>
-                <input type="date" name="fecha_prestamo" class="form-control" value="{" required>
+                <label>Fecha Traslado:</label>
+                <input type="date" name="fecha_prestamo" class="form-control" value="{{ $date }}" required>
             </div>
 
             <div class="mb-3 col-3">
@@ -66,7 +66,9 @@
 
             <div class="col-3">
                 <label>Estado:</label>
-                <select class="form-control" id="input_estado">
+                <select class="form-control" id="input_estado" value="{{ $movement->status}}">
+                    <option value="Reparacion">Reparación</option>
+                    <option value="Traslado">Traslado</option>
                 </select>
             </div>
 
@@ -81,7 +83,7 @@
             <thead class="table-dark">
                 <tr>
                     <th>Material</th>
-                    <th>Área</th>
+                    <th>Aula</th>
                     <th>Cantidad</th>
                     <th>Estado</th>
                     <th>Acciones</th>
@@ -94,7 +96,7 @@
 
         <input type="hidden" name="materials_json" id="materials_json">
 
-        <button type="" class="btn btn-primary mt-3">Actualizar préstamo</button>
+        <button type="submit" class="btn btn-primary mt-3">Actualizar registro</button>
     </form>
 </div>
 <script>

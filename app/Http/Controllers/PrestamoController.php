@@ -9,6 +9,7 @@ use App\Models\Sector;
 use Illuminate\Http\Request;
 use App\Models\MovementDetail;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -100,6 +101,9 @@ class PrestamoController extends Controller
         $sectorsData = Sector::all();
         $materials = Material::all();
 
+        // Formatear la fecha
+        $date = Carbon::parse($movement->date)->format('Y-m-d');
+
         $movementDetails = $movement->movementDetails->map(function ($detail) {
             return [
                 'material_id' => $detail->material_id,
@@ -109,7 +113,7 @@ class PrestamoController extends Controller
             ];
         });
 
-        return view('loans.edit', compact('movement', 'sectorsData', 'materials', 'movementDetails'));
+        return view('loans.edit', compact('movement', 'sectorsData', 'materials', 'movementDetails', 'date'));
     }
 
 
