@@ -22,7 +22,7 @@ class Material extends Model
     // app/models/materiales.php
     public function sector()
     {
-        return $this->belongsTo(Sector::class, 'sector');
+        return $this->belongsTo(Sector::class,);
     }
 
     public function movementDetails()

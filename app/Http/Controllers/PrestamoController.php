@@ -20,11 +20,10 @@ class PrestamoController extends Controller
      */
     public function index()
     {
-        // Trae todos los préstamos con las relaciones cargadas
-        $loansDataList = Movement::with(['user', 'alumno', 'prestamoMateriales.materials.sector'])->get();
 
-        // Retorna la vista y pasa los datos   
-        return view('loans.index', compact('loansDataList'));
+        $movementDataList = Movement::with(['user', 'movementDetails.material.sector'])->get();
+
+        return view('loans.index', compact('movementDataList'));
     }
 
     /**
@@ -33,11 +32,10 @@ class PrestamoController extends Controller
     public function create()
     {
         //
-        $users = User::all();
         $materialsData = Material::all();
         $sectorsData = Sector::all(); // Agregamos las áreas
 
-        return view('loans.create', compact('materialsData', 'sectorsData','users',));
+        return view('loans.create', compact('materialsData', 'sectorsData'));
     }
     
     public function materialsByClassroom($sector)
@@ -51,25 +49,33 @@ class PrestamoController extends Controller
         $request->validate([
             'fecha_prestamo' => 'required|date',
             'fecha_devolucion' => 'nullable|date|after_or_equal:fecha_prestamo',
-            'observaciones' => 'nullable|string',
-        ]);
-
-        $prestamo = Movement::create([
-            'user_id' => Auth::id(),
-            'fecha_prestamo' => $request->fecha_prestamo,
-            'fecha_devolucion' => $request->fecha_devolucion,
-            'observaciones' => $request->observaciones ?? null,
+            'destinationSector' => 'required|exists:sectors,id',
+            'materials_json' => 'required|json',
         ]);
 
         $materials = json_decode($request->materials_json, true);
 
+        if (empty($materials)) {
+            return back()->withErrors(['materials_json' => 'Debe añadir al menos un material.']);
+        }
+
+        // Usamos el área origen del primer material (puedes modificar esto si necesitas múltiples movimientos por origen)
+        $firstMaterial = $materials[0];
+
+        $movement = Movement::create([
+            'type' => 'salida',
+            'origin_sector_id' => $firstMaterial['area_id'], // primer origen
+            'destination_sector_id' => $request->destinationSector,
+            'user_id' => auth()->id(),
+            'date' => $request->fecha_prestamo,
+        ]);
+
         foreach ($materials as $material) {
             MovementDetail::create([
-                'prestamo_id' => $prestamo->id,
+                'movement_id' => $movement->id,
                 'material_id' => $material['material_id'],
-                'destinationSector' => $material['destinationSector'],
-                'cantidad' => $material['cantidad'],
-                'estado' => $material['estado'],
+                'quantity' => $material['cantidad'],
+                'status' => $material['estado'],
             ]);
         }
 
@@ -90,68 +96,73 @@ class PrestamoController extends Controller
     
     public function edit($id)
     {
-        $loan = Movement::findOrFail($id);
-        $classroomsData = Sector::all();
-        $materialsData = Material::all();
-        $prestamoMaterialData = $loan->prestamoMateriales;
-        return view('loans.edit', compact('loan', 'alumnosData', 'classroomsData', 'materialsData', 'prestamoMaterialData'));
+        $movement = Movement::findOrFail($id);
+        $sectorsData = Sector::all();
+        $materials = Material::all();
+
+        $movementDetails = $movement->movementDetails->map(function ($detail) {
+            return [
+                'material_id' => $detail->material_id,
+                'material_nombre' => $detail->material->name ?? 'Sin nombre',
+                'quantity' => $detail->quantity,
+                'status' => $detail->status,
+            ];
+        });
+
+        return view('loans.edit', compact('movement', 'sectorsData', 'materials', 'movementDetails'));
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
-    {
-        // Decodificar el JSON recibido desde el input hidden
-       $materiales = json_decode($request->input('materials_json'), true);
+    // public function update(Request $request, $id)
+    // {
+    //    $materiales = json_decode($request->input('materials_json'), true);
 
-        // Validar manualmente los datos principales y los materiales decodificados
-        $request->validate([
-            'alumno_id' => 'required|exists:alumnos,id',
-            'fecha_prestamo' => 'required|date',
-            'fecha_devolucion' => 'nullable|date|after_or_equal:fecha_prestamo',
-            'observaciones' => 'nullable|string',
-        ]);
+    //     $request->validate([
+    //         'alumno_id' => 'required|exists:alumnos,id',
+    //         'fecha_prestamo' => 'required|date',
+    //         'fecha_devolucion' => 'nullable|date|after_or_equal:fecha_prestamo',
+    //         'observaciones' => 'nullable|string',
+    //     ]);
 
-        if (!is_array($materiales) || count($materiales) < 1) {
-            return back()->withErrors(['materiales' => 'Debes agregar al menos un material.'])->withInput();
-        }
+    //     if (!is_array($materiales) || count($materiales) < 1) {
+    //         return back()->withErrors(['materiales' => 'Debes agregar al menos un material.'])->withInput();
+    //     }
 
-        // Validación personalizada para cada material
-        foreach ($materiales as $material) {
-            Validator::make($material, [
-                'material_id' => 'required|exists:materials,id',
-                'area_id' => 'required|exists:areas,id',
-                'cantidad' => 'required|integer|min:1',
-                'estado' => 'required|string|in:prestado,devuelto,pendiente,perdida',
-            ])->validate();
-        }
+    //     foreach ($materiales as $material) {
+    //         Validator::make($material, [
+    //             'material_id' => 'required|exists:materials,id',
+    //             'area_id' => 'required|exists:areas,id',
+    //             'cantidad' => 'required|integer|min:1',
+    //             'estado' => 'required|string|in:prestado,devuelto,pendiente,perdida',
+    //         ])->validate();
+    //     }
 
-        // Actualizar el préstamo
-        $loan = Movement::findOrFail($id);
-        $loan->update([
-            'alumno_id' => $request->alumno_id,
-            'fecha_prestamo' => $request->fecha_prestamo,
-            'fecha_devolucion' => $request->fecha_devolucion,
-            'observaciones' => $request->observaciones,
-        ]);
+    //     $loan = Movement::findOrFail($id);
+    //     $loan->update([
+    //         'alumno_id' => $request->alumno_id,
+    //         'fecha_prestamo' => $request->fecha_prestamo,
+    //         'fecha_devolucion' => $request->fecha_devolucion,
+    //         'observaciones' => $request->observaciones,
+    //     ]);
 
-        // Eliminar materiales anteriores
-        $loan->prestamoMateriales()->delete();
+    //     $loan->prestamoMateriales()->delete();
 
-        // Crear los nuevos materiales
-        foreach ($materiales as $material) {
-            MovementDetails::create([
-                'prestamo_id' => $loan->id,
-                'material_id' => $material['material_id'],
-                'area_id' => $material['area_id'],
-                'cantidad' => $material['cantidad'],
-                'estado' => $material['estado'],
-            ]);
-        }
+    //     // Crear los nuevos materiales
+    //     foreach ($materiales as $material) {
+    //         MovementDetails::create([
+    //             'prestamo_id' => $loan->id,
+    //             'material_id' => $material['material_id'],
+    //             'area_id' => $material['area_id'],
+    //             'cantidad' => $material['cantidad'],
+    //             'estado' => $material['estado'],
+    //         ]);
+    //     }
 
-        return redirect()->route('loanList')->with('success', 'Préstamo actualizado correctamente.');
-    }
+    //     return redirect()->route('loanList')->with('success', 'Préstamo actualizado correctamente.');
+    // }
 
 
     /**

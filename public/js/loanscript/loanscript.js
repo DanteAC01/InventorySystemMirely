@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    showMaterials(materials); // "usuarios" viene del script en la vista Blade
+    showMaterials(materials);
 });
 
 function loadMaterials(sector) {

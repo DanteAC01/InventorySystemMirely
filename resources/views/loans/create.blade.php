@@ -75,10 +75,8 @@
                 <div class="col-3">
                     <label>Estado:</label>
                     <select class="form-control" id="input_estado" required>
-                        <option value="prestado">Prestado</option>
-                        <option value="devuelto">Devuelto</option>
-                        <option value="pendiente">Pendiente</option>
-                        <option value="perdida">Pérdida</option>
+                        <option value="Reparacion">Reparación</option>
+                        <option value="Traslado">Traslado</option>
                     </select>
                 </div>
 

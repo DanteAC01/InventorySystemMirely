@@ -24,7 +24,7 @@
     </tr>
   </thead>
   <tbody>
-    @foreach ($SectorsData as $data)
+    @foreach ($sectorsData as $data)
       <tr>
         <td>{{ $data->id }}</td>
         <td>{{ $data->name }}</td>

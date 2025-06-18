@@ -34,8 +34,9 @@ class Movement extends Model
         return $this->belongsTo(Sector::class, 'destination_sector_id');
     }
 
-    public function details()
+    public function movementDetails()
     {
-        return $this->hasMany(MovementDetail::class);
+        return $this->hasMany(MovementDetail::class, 'movement_id');
     }
+
 }

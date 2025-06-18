@@ -18,30 +18,24 @@
     </div>
     @endif
 
-    <form method="POST" action="{{ route('loanUpdate', $loan->id) }}" onsubmit="updateMaterialsField()">
+    <form method="POST" action="{{ route('loanUpdate', $movement->id) }}" onsubmit="updateMaterialsField()">
         @csrf
         @method('PUT')
 
         <div class="row">
             <div class="mb-3 col-4">
-                <label>Alumno:</label>
-                <select name="alumno_id" class="form-control" required>
-                    @foreach ($alumnosData as $alumnoData)
-                        <option value="{{ $alumnoData->id }}" {{ old('alumno_id', $loan->alumno_id) == $alumnoData->id ? 'selected' : '' }}>
-                            {{ $alumnoData->Nombre }} - {{ $alumnoData->dni }}
-                        </option>
-                    @endforeach
-                </select>
+                <label>Usuario:</label>
+                <input type="date" name="fecha_prestamo" class="form-control" value="{{ auth()->user()->name }}" required>
             </div>
 
             <div class="mb-3 col-3">
                 <label>Fecha Préstamo:</label>
-                <input type="date" name="fecha_prestamo" class="form-control" value="{{ old('fecha_prestamo', $loan->fecha_prestamo) }}" required>
+                <input type="date" name="fecha_prestamo" class="form-control" value="{" required>
             </div>
 
             <div class="mb-3 col-3">
                 <label>Fecha Devolución:</label>
-                <input type="date" name="fecha_devolucion" class="form-control" value="{{ old('fecha_devolucion', $loan->fecha_devolucion) }}">
+                <input type="date" name="fecha_devolucion" class="form-control" value="">
             </div>
         </div>
 
@@ -52,8 +46,8 @@
                 <label>Aula:</label>
                 <select class="form-control" id="area_id" onchange="loadMaterials(this.value)">
                     <option value="">Seleccione un aula</option>
-                    @foreach($classroomsData as $area)
-                        <option value="{{ $area->id }}">{{ $area->nombre }}</option>
+                    @foreach($sectorsData as $sectorData)
+                        <option value="{{ $sectorData->id }}">{{ $sectorData->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -73,10 +67,6 @@
             <div class="col-3">
                 <label>Estado:</label>
                 <select class="form-control" id="input_estado">
-                    <option value="prestado">Prestado</option>
-                    <option value="devuelto">Devuelto</option>
-                    <option value="pendiente">Pendiente</option>
-                    <option value="perdida">Pérdida</option>
                 </select>
             </div>
 
@@ -91,7 +81,7 @@
             <thead class="table-dark">
                 <tr>
                     <th>Material</th>
-                    <th>Aula</th>
+                    <th>Área</th>
                     <th>Cantidad</th>
                     <th>Estado</th>
                     <th>Acciones</th>
@@ -108,7 +98,7 @@
     </form>
 </div>
 <script>
-    window.materials = @json($prestamoMaterialData);
+    window.materials = @json($movementDetails);
 </script>
 <script src="/js/loanscript/loanscript.js"></script>
 @endsection

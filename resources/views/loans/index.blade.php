@@ -21,54 +21,52 @@
                     <tr>
                         <th>ID</th>
                         <th>Material</th>
-                        <th>Estudiante</th>
+                        <th>Usuario</th>
                         <th>Área</th>
-                        <th>Fecha préstamo</th>
+                        <th>Fecha de traslado</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($loansDataList as $data)
+                    @forelse($movementDataList as $movement)
                         <tr>
-                            <td>{{ $data->id }}</td>
-                            
+                            <td>{{ $movement->id }}</td>
+
                             <td>
-                                @foreach($data->prestamoMateriales as $pm)
-                                    <div>{{ $pm->material->nombre ?? 'Sin material' }}</div>
+                                @foreach($movement->movementDetails as $detail)
+                                    <div>{{ $detail->material->name ?? 'Sin material' }}</div>
                                 @endforeach
                             </td>
 
-                            <td>{{ $data->alumno->Nombre ?? 'N/A' }}</td>
-                            
+                            <td>{{ $movement->user->name ?? 'N/A' }}</td>
+
                             <td>
-                                @foreach($data->prestamoMateriales as $pm)
-                                    <div>{{ $pm->area->nombre ?? 'Sin área' }}</div>
+                                @foreach($movement->movementDetails as $detail)
+                                    <div>{{ $detail->material->sector->name ?? 'Sin área' }}</div>
                                 @endforeach
                             </td>
 
-                            <td>{{ $data->fecha_prestamo }}</td>
+                            <td>{{ $movement->date }}</td>
 
                             <td>
-                                @foreach($data->prestamoMateriales as $pm)
-                                    <div>{{ ucfirst($pm->estado) }}</div>
+                                @foreach($movement->movementDetails as $detail)
+                                    <div>{{ ucfirst($detail->status) }}</div>
                                 @endforeach
                             </td>
 
                             <td>
-                                <a href="{{ route('loanEdit', $data->id) }}" class="btn btn-sm btn-primary">Editar</a>
-                                <form action="{{ route('loanDestroy', $data->id) }}" method="POST" style="display:inline-block">
+                                <a href="{{ route('loanEdit', $movement->id) }}" class="btn btn-sm btn-primary">Editar</a>
+                                <form action="{{ route('loanDestroy', $movement->id) }}" method="POST" style="display:inline-block">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de eliminar este préstamo?')">
-                                        Borrar
-                                    </button>
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de eliminar este movimiento?')">Borrar</button>
                                 </form>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center text-muted">No hay préstamos registrados.</td>
+                            <td colspan="7" class="text-center text-muted">No hay movimientos registrados.</td>
                         </tr>
                     @endforelse
                 </tbody>

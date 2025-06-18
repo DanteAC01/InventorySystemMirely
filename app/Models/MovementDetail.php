@@ -9,9 +9,16 @@ class MovementDetail extends Model
 {
     use HasFactory;
 
-    public function movement()
+    protected $fillable = [
+        'movement_id',
+        'material_id',
+        'quantity',
+        'status',
+    ];
+
+    public function movementDetails()
     {
-        return $this->belongsTo(Movements::class);
+        return $this->hasMany(MovementDetail::class, 'movement_id');
     }
 
     public function material()
