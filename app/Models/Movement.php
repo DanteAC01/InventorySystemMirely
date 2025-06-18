@@ -8,6 +8,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Movement extends Model
 {
     use HasFactory;
+    
+    protected $fillable = [
+        'id',
+        'type',
+        'origin_sector_id',
+        'destination_sector_id',
+        'user_id',
+        'date',
+    ];
 
     // app/Models/Prestamo.php
     public function user()
