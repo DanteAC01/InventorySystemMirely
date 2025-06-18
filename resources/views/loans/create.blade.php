@@ -3,7 +3,7 @@
 @section('title', 'Nuevo préstamo | IDEX PERÚ JAPÓN')
 
 @section('content_header')
-  <h1>Nuevo préstamo</h1>
+  <h1>Nuevo traslado</h1>
 @stop
 
 @section('content')
