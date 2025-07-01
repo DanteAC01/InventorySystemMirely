@@ -74,11 +74,10 @@ class MarterialeController extends Controller
      */
     public function edit(string $id)
     {
-
         $material = Material::findOrFail($id);
-        $classroomData = Area::all();
+        $sectorData = Sector::all();
         
-        return view('material.edit', compact('material','classroomData'));
+        return view('material.edit', compact('material','sectorData'));
     }
 
     /**
@@ -87,12 +86,12 @@ class MarterialeController extends Controller
     public function update(Request $request, $id)
     {
         $validUpdate = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'total' => 'required|integer|min:0',
-            'estado' => 'required|string',
-            'fecha_ingreso' => 'required|date',
-            'descripcion' => 'required|string',
-            'area_id' => 'required|exists:areas,id',
+            'name' => 'required|string|max:255',
+            'quantity' => 'required|integer|min:0',
+            'status' => 'required|string',
+            'dateEntry' => 'required|date',
+            'description' => 'required|string',
+            'sector_id' => 'required|exists:sector,id',
         ]);
         
         $validUpdate['cantidad_disponible'] = $validUpdate['total'];

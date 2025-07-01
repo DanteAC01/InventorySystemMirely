@@ -8,46 +8,45 @@
 
 @section('content')
  <div class="container-fluid">
-  <form method="POST" action="{{ route('materialUpdate', $material->id) }}">
+  <form action="{{ route('materialUpdate', $material->id) }}" method="POST" >
     @csrf
     @method('PUT')
      <div class="row">
       <div class="mb-3 col-3">
-       <label for="nombre" class="form-label">Nombre:</label>
-       <input type="text" name="nombre" class="form-control" value="{{ old('nombre', $material->nombre) }}" required>
+       <label for="name" class="form-label">Nombre:</label>
+       <input type="text" name="name" class="form-control" value="{{ old('nombre', $material->name) }}" required>
       </div>
 
       <div class="mb-3 col-1">
-       <label for="total" class="form-label">Cantidad Total:</label>
-       <input type="number" name="total" class="form-control" value="{{ old('total', $material->total) }}" required>
+       <label for="quantity" class="form-label">Cantidad:</label>
+       <input type="number" name="quantity" class="form-control" value="{{ old('total', $material->quantity) }}" required>
       </div>
          
-
       <div class="mb-3 col-3">
-       <label for="estado" class="form-label">Estado:</label>
-       <select name="estado" class="form-control" required>
+       <label for="status" class="form-label">Estado:</label>
+       <select name="status" class="form-control" required>
          @foreach (['nuevo', 'usado', 'deteriorado', 'en reparación', 'dado de baja'] as $estado)
-             <option value="{{ $estado }}" @if(old('estado', $material->estado) === $estado) selected @endif>{{ ucfirst($estado) }}</option>
+             <option value="{{ $material->status }}" @if(old('status', $material->status) === $estado) selected @endif>{{ ucfirst($estado) }}</option>
          @endforeach
        </select>
       </div>
 
       <div class="mb-3 col-2">
-       <label for="fecha_ingreso" class="form-label">Fecha de Ingreso:</label>
-       <input type="date" name="fecha_ingreso" class="form-control" value="{{ old('fecha_ingreso', $material->fecha_ingreso) }}" required>
+       <label for="dateEntry" class="form-label">Fecha de Ingreso:</label>
+       <input type="date" name="dateEntry" class="form-control" value="{{ old('dateEntry', $material->dateEntry) }}" required>
       </div>
      </div>
      <div class="row">
       <div class="mb-3 col-6">
-       <label for="descripcion" class="form-label">Descripción:</label>
-       <input type="text" name="descripcion" class="form-control" value="{{ old('descripcion', $material->descripcion) }}" required>
+       <label for="description" class="form-label">Descripción:</label>
+       <input type="text" name="description" class="form-control" value="{{ old('description', $material->description) }}" required>
       </div>
 
       <div class="mb-3 col-2">
-       <label for="area_id" class="form-label">Área:</label>
-       <select name="area_id" class="form-control" required>
-        @foreach ($classroomData as $classroom)
-         <option value="{{ $classroom->id }}">{{ $classroom->nombre }}</option>
+       <label for="sector_id" class="form-label">Área:</label>
+       <select name="sector_id" class="form-control" required>
+        @foreach ($sectorData as $sector)
+         <option value="{{ $sector->id }}">{{ $sector->name }}</option>
         @endforeach
        </select>
       </div>
