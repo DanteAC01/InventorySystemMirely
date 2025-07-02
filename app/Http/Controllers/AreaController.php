@@ -68,7 +68,7 @@ class AreaController extends Controller
         ]);
 
         // Buscar y actualizar
-        $classroom = Area::findOrFail($id);
+        $classroom = Sector::findOrFail($id);
         $classroom->nombre = $request->input('nombre');
         $classroom->save();
 
