@@ -49,13 +49,67 @@ function showMaterials(materials) {
  * @returns {HTMLElement}
 **/
 
+function addMaterial() {
+    const areaSelect = document.getElementById('area_id');
+    const materialSelect = document.getElementById('material_id');
+    const cantidadInput = document.getElementById('input_cantidad').value;
+    const status = document.getElementById('input_estado').value;
+
+    const area_id = areaSelect.value;
+    const area_nombre = areaSelect.options[areaSelect.selectedIndex].text;
+
+    const material_id = materialSelect.value;
+    const material_nombre = materialSelect.options[materialSelect.selectedIndex].text;
+
+    if (!area_id || !material_id || !cantidadInput) {
+        alert('Por favor, complete todos los campos.');
+        return;
+    }
+
+    const quantity = parseInt(cantidadInput);
+    if (quantity <= 0) {
+        alert('La cantidad debe ser mayor que 0.');
+        return;
+    }
+
+    const material = {
+        material_id: material_id,
+        material_nombre: material_nombre,
+        area_id: area_id,
+        area_nombre: area_nombre,
+        quantity: quantity,
+        status: status
+    };
+
+    const tabla = document.getElementById('materialsTable').getElementsByTagName('tbody')[0];
+    const filas = tabla.getElementsByTagName('tr');
+
+    for (let i = 0; i < filas.length; i++) {
+        const fila = filas[i];
+        const filaMaterialId = fila.querySelector('.material-id').textContent.trim();
+        const filaAreaId = fila.querySelector('.area-id')?.textContent.trim();
+
+        if (filaMaterialId === material.material_id && filaAreaId === material.area_id) {
+            const cantidadSpan = fila.querySelector('.cantidad');
+            let cantidadActual = parseInt(cantidadSpan.textContent);
+            cantidadActual += material.quantity;
+            cantidadSpan.textContent = cantidadActual;
+            return;
+        }
+    }
+
+    const fila = createAppendChild(material);
+    tabla.appendChild(fila);
+}
+
 function createAppendChild(material) {
     const fila = document.createElement('tr');
     fila.innerHTML = `
-        <td>${material.material_id}</td>
-        <td>${material.material_nombre}</td>
+        <td class="material-id">${material.material_id}</td>
+        <td class="material-nombre">${material.material_nombre}</td>
         <td><span class="cantidad">${material.quantity}</span></td>
         <td>${material.status}</td>
+        <td style="display:none;" class="area-id">${material.area_id}</td> <!-- oculto -->
         <td>
           <button type="button" class="btn btn-secondary mr-1" onclick="addQuantity(this)">
             <i class="fas fa-plus"></i>
@@ -87,57 +141,6 @@ function minusQuantity(button) {
   }
 }
 
-function addMaterial() {
-    // Obtener valores de los inputs
-    const area_id = document.getElementById('area_id').value;
-    const material_id = document.getElementById('material_id').value;
-    const cantidadInput = document.getElementById('input_cantidad').value;
-    const estado = document.getElementById('input_estado').value;
-
-    // Validar que los campos obligatorios no estén vacíos
-    if (!area_id || !material_id || !cantidadInput) {
-        alert('Por favor, complete todos los campos.');
-        return;
-    }
-
-    const cantidad = parseInt(cantidadInput);
-    if (cantidad <= 0) {
-        alert('La cantidad debe ser mayor que 0.');
-        return;
-    }
-
-    // Crear objeto material con los datos del formulario
-    const material = {
-        material_id: material_id,
-        area_id: area_id,
-        cantidad: cantidad,
-        estado: estado
-    };
-
-    // Agregar o sumar material en la tabla
-    const tabla = document.getElementById('materialsTable').getElementsByTagName('tbody')[0];
-    const filas = tabla.getElementsByTagName('tr');
-
-    // Buscar si ya existe ese material con el mismo area
-    for (let i = 0; i < filas.length; i++) {
-        const celdas = filas[i].getElementsByTagName('td');
-        const filaMaterialId = celdas[0].textContent;
-        const filaAreaId = celdas[1].textContent;
-
-        if (filaMaterialId === material.material_id && filaAreaId === material.area_id) {
-            // Existe: sumar cantidades
-            const cantidadSpan = celdas[2].querySelector('.cantidad');
-            let cantidadActual = parseInt(cantidadSpan.textContent);
-            cantidadActual += material.cantidad;
-            cantidadSpan.textContent = cantidadActual;
-            return;
-        }
-    }
-
-    // Si no existe, crear una fila nueva
-    const fila = createAppendChild(material);
-    tabla.appendChild(fila);
-}
 
 function removeMaterial(button) {
     const fila = button.closest('tr');
@@ -156,8 +159,8 @@ function updateMaterialsField() {
         materiales.push({
             material_id: celdas[0].textContent.trim(),
             area_id: celdas[1].textContent.trim(),
-            cantidad: parseInt(celdas[2].querySelector('.quantity').textContent.trim()),
-            estado: celdas[3].textContent.trim(),
+            quantity: parseInt(celdas[2].querySelector('.quantity').textContent.trim()),
+            status: celdas[3].textContent.trim(),
         });
     }
     console.log('Materiales que se enviarán:', materiales); // debug

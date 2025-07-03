@@ -18,16 +18,22 @@
     </div>
     @endif
 
-    <form method="POST" action="{{ route('loanUpdate', $movement->id) }}" onsubmit="updateMaterialsField()">
+    <form action="{{ route('loanUpdate', $movement->id) }}" onsubmit="updateMaterialsField()" method="POST">
         @csrf
         @method('PUT')
-
         <div class="row">
             <div class="mb-3 col-4">
                 <label>Usuario:</label>
                 <input type="text" name="fecha_prestamo" class="form-control" value="{{ auth()->user()->name }}" required disabled>
             </div>
-
+            <div class="mb-3 col-3">
+                <label>Área a enviar:</label>
+                <select name="destinationSector" class="form-control" required>
+                    @foreach ($sectorsData as $sectorData)
+                        <option value="{{ $sectorData->id }}" {{ old('classroom_id') == $sectorData->id ? 'selected' : '' }}> {{ $sectorData->name}}
+                    @endforeach
+                </select>
+            </div>
             <div class="mb-3 col-3">
                 <label>Fecha Traslado:</label>
                 <input type="date" name="fecha_prestamo" class="form-control" value="{{ $date }}" required>

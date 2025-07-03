@@ -69,7 +69,7 @@ class AreaController extends Controller
 
         // Buscar y actualizar
         $classroom = Sector::findOrFail($id);
-        $classroom->nombre = $request->input('nombre');
+        $classroom->name = $request->input('name');
         $classroom->save();
 
         // Redirigir con mensaje de éxito

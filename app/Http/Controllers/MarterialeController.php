@@ -91,10 +91,10 @@ class MarterialeController extends Controller
             'status' => 'required|string',
             'dateEntry' => 'required|date',
             'description' => 'required|string',
-            'sector_id' => 'required|exists:sector,id',
+            'sector_id' => 'required|exists:sectors,id',
         ]);
         
-        $validUpdate['cantidad_disponible'] = $validUpdate['total'];
+        $validUpdate['quantityAvailable'] = $validUpdate['quantity'];
 
         $material = Material::findOrFail($id);
         $material->update($validUpdate);
