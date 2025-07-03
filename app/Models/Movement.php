@@ -16,6 +16,7 @@ class Movement extends Model
         'destination_sector_id',
         'user_id',
         'date',
+        'date_return',
     ];
 
     // app/Models/Prestamo.php

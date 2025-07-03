@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
-  Route::get('/', function () {return view('home');});
+  Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
   Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
   Route::get('/classroomList', [App\Http\Controllers\AreaController::class, 'index'])->name('classroomList');
@@ -30,5 +30,6 @@ Route::middleware(['auth'])->group(function () {
   Route::post('/loanSave', [App\Http\Controllers\PrestamoController::class, 'store'])->name('loanSave');
   Route::get('/loanEdit/{id}', [App\Http\Controllers\PrestamoController::class, 'edit'])->name('loanEdit');
   Route::put('/loanUpdate/{id}', [App\Http\Controllers\PrestamoController::class, 'update'])->name('loanUpdate');
-  Route::delete('/loanDestroy/{id}', [App\Http\Controllers\PrestamoController::class, 'destroy'])->name('loanDestroy');
+  Route::delete('/loanDestroy/{id}', [App\Http\Controllers\PrestamoController::class, 'destroy'])->name('loanDestroy');// routes/web.php
+  Route::patch('/movements/{id}/markasreturned', [App\Http\Controllers\HomeController::class, 'markAsReturned'])->name('movements.markAsReturned');
 });
