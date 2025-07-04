@@ -49,7 +49,7 @@ class PrestamoController extends Controller
     {
         $request->validate([
             'fecha_prestamo' => 'required|date',
-            'fecha_devolucion' => 'nullable|date|after_or_equal:fecha_prestamo',
+            'fecha_devolucion' => 'nullable|date|after_or_equal:fecha_devolucion',
             'destinationSector' => 'required|exists:sectors,id',
             'materials_json' => 'required|json',
         ]);
@@ -69,6 +69,7 @@ class PrestamoController extends Controller
             'destination_sector_id' => $request->destinationSector,
             'user_id' => auth()->id(),
             'date' => $request->fecha_prestamo,
+            'date_return' => $request->fecha_devolucion,
         ]);
 
         foreach ($materials as $material) {
@@ -103,6 +104,7 @@ class PrestamoController extends Controller
 
         // Formatear la fecha
         $date = Carbon::parse($movement->date)->format('Y-m-d');
+        $dateReturn = Carbon::parse($movement->date_return)->format('Y-m-d');
 
         $movementDetails = $movement->movementDetails->map(function ($detail) {
             return [
@@ -113,7 +115,11 @@ class PrestamoController extends Controller
             ];
         });
 
-        return view('loans.edit', compact('movement', 'sectorsData', 'materials', 'movementDetails', 'date'));
+        $originArea = Sector::find($movement->origin_sector_id);
+        $originAreaID = $originArea->id ;
+        $originAreaName = $originArea ? $originArea->name : 'Área desconocida';
+
+        return view('loans.edit', compact('movement', 'sectorsData', 'materials', 'movementDetails', 'date', 'dateReturn','originAreaID', 'originAreaName'));
     }
 
 
@@ -122,10 +128,10 @@ class PrestamoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Validación del formulario
         $request->validate([
             'fecha_prestamo' => 'required|date',
             'fecha_devolucion' => 'nullable|date|after_or_equal:fecha_prestamo',
+            'origin_sector_id' => 'required|exists:sectors,id',
             'destinationSector' => 'required|exists:sectors,id',
             'materials_json' => 'required|json',
         ]);
@@ -133,46 +139,42 @@ class PrestamoController extends Controller
         $materials = json_decode($request->materials_json, true);
 
         if (empty($materials)) {
-            return back()->withErrors(['materials_json' => 'Debe añadir al menos un material.'])->withInput();
+            return back()->withErrors(['materials_json' => 'At least one material must be added.'])->withInput();
         }
 
-        // Validación de cada material individual
         foreach ($materials as $material) {
             Validator::make($material, [
                 'material_id' => 'required|exists:materials,id',
-                'area_id' => 'required|exists:sectors,id',
-                'cantidad' => 'required|integer|min:1',
-                'estado' => 'required|string|in:prestado,devuelto,pendiente,perdida',
+                'quantity' => 'required|integer|min:1',
+                'statusCell' => 'required|string|in:Reparación,Traslado,Reparacion',
             ])->validate();
         }
 
         $movement = Movement::findOrFail($id);
 
-        // Usamos el área origen del primer material (igual que en store)
         $firstMaterial = $materials[0];
 
         $movement->update([
             'type' => 'salida',
-            'origin_sector_id' => $firstMaterial['area_id'],
+            'origin_sector_id' => $request->origin_sector_id,
             'destination_sector_id' => $request->destinationSector,
             'user_id' => auth()->id(),
             'date' => $request->fecha_prestamo,
+            'date_return' => $request->fecha_devolucion,
         ]);
 
-        // Eliminamos los detalles anteriores
-        $movement->details()->delete();
+        $movement->movementDetails ()->delete();
 
-        // Creamos los nuevos detalles
         foreach ($materials as $material) {
             MovementDetail::create([
                 'movement_id' => $movement->id,
                 'material_id' => $material['material_id'],
-                'quantity' => $material['cantidad'],
-                'status' => $material['estado'],
+                'quantity' => $material['quantity'],
+                'status' => $material['statusCell'],
             ]);
         }
 
-        return redirect()->route('loanList')->with('success', 'Préstamo actualizado correctamente.');
+        return redirect()->route('loanList')->with('success', 'Loan updated successfully.');
     }
 
     /**

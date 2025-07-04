@@ -53,7 +53,7 @@
                 <div class="col-3">
                     <label>Área origen:</label>
                     <select class="form-control" id="area_id" onchange="loadMaterials(this.value)" required>
-                        <option value="">Seleccione un aula</option>
+                        <option value="">Seleccione una área</option>
                         @foreach($sectorsData as $sector)
                             <option value="{{ $sector->id }}">{{ $sector->name }}</option>
                         @endforeach
@@ -75,7 +75,7 @@
                 <div class="col-3">
                     <label>Estado:</label>
                     <select class="form-control" id="input_estado" required>
-                        <option value="Reparacion">Reparación</option>
+                        <option value="Reparación">Reparación</option>
                         <option value="Traslado">Traslado</option>
                     </select>
                 </div>

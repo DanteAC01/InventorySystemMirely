@@ -151,18 +151,20 @@ function updateMaterialsField() {
     const tabla = document.getElementById('materialsTable').getElementsByTagName('tbody')[0];
     const filas = tabla.getElementsByTagName('tr');
 
-    const materiales = [];
+    const materials = [];
 
     for (let i = 0; i < filas.length; i++) {
         const celdas = filas[i].getElementsByTagName('td');
 
-        materiales.push({
+        materials.push({
             material_id: celdas[0].textContent.trim(),
-            area_id: celdas[1].textContent.trim(),
-            quantity: parseInt(celdas[2].querySelector('.quantity').textContent.trim()),
-            status: celdas[3].textContent.trim(),
+            quantity: parseInt(celdas[2].querySelector('.cantidad').textContent.trim()),
+            statusCell: celdas[3].textContent.trim(),
         });
     }
-    console.log('Materiales que se enviarán:', materiales); // debug
-    document.getElementById('materials_json').value = JSON.stringify(materiales);
+
+    console.log('Materials to be sent:', materials);
+    document.getElementById('materials_json').value = JSON.stringify(materials);
+
+    return true;
 }

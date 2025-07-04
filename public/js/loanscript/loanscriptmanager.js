@@ -118,24 +118,3 @@ function updateMaterialsField() {
  }));
  hiddenField.value = JSON.stringify(listToSend);
 }
-
-// Cargar materiales al iniciar (modo edición)
-function loadInitialMaterials(jsonString, classroomMap = {}, materialMap = {}) {
- try {
-  const materials = JSON.parse(jsonString);
-
-  materialsList = materials.map(mat => ({
-   area_id: mat.area_id,
-   material_id: mat.material_id,
-   cantidad: parseInt(mat.cantidad),
-   estado: mat.estado,
-   area_text: classroomMap[mat.area_id] || 'Área desconocida',
-   material_text: materialMap[mat.material_id] || 'Material desconocido'
-  }));
-
-  renderMaterialsTable();
-  updateMaterialsField();
- } catch (error) {
-  console.error('Error al cargar materiales iniciales:', error);
- }
-}

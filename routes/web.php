@@ -30,6 +30,6 @@ Route::middleware(['auth'])->group(function () {
   Route::post('/loanSave', [App\Http\Controllers\PrestamoController::class, 'store'])->name('loanSave');
   Route::get('/loanEdit/{id}', [App\Http\Controllers\PrestamoController::class, 'edit'])->name('loanEdit');
   Route::put('/loanUpdate/{id}', [App\Http\Controllers\PrestamoController::class, 'update'])->name('loanUpdate');
-  Route::delete('/loanDestroy/{id}', [App\Http\Controllers\PrestamoController::class, 'destroy'])->name('loanDestroy');// routes/web.php
+  Route::delete('/loanDestroy/{id}', [App\Http\Controllers\PrestamoController::class, 'destroy'])->name('loanDestroy');
   Route::patch('/movements/{id}/markasreturned', [App\Http\Controllers\HomeController::class, 'markAsReturned'])->name('movements.markAsReturned');
 });

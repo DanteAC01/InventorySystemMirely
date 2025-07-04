@@ -41,7 +41,7 @@
 
             <div class="mb-3 col-3">
                 <label>Fecha Devolución:</label>
-                <input type="date" name="fecha_devolucion" class="form-control" value="">
+                <input type="date" name="fecha_devolucion" class="form-control" value="{{ $dateReturn}}">
             </div>
         </div>
 
@@ -49,9 +49,9 @@
         <h5>Editar materiales</h5>
         <div class="row align-items-end">
             <div class="col-3">
-                <label>Aula:</label>
-                <select class="form-control" id="area_id" onchange="loadMaterials(this.value)">
-                    <option value="">Seleccione un aula</option>
+                <label>Área:</label>
+                <select class="form-control" name="origin_sector_id" id="origin_sector_id" onchange="loadMaterials(this.value)">
+                    <option value="{{$originAreaID}}">{{$originAreaName}}</option>
                     @foreach($sectorsData as $sectorData)
                         <option value="{{ $sectorData->id }}">{{ $sectorData->name }}</option>
                     @endforeach
@@ -73,7 +73,7 @@
             <div class="col-3">
                 <label>Estado:</label>
                 <select class="form-control" id="input_estado" value="{{ $movement->status}}">
-                    <option value="Reparacion">Reparación</option>
+                    <option value="Reparación">Reparación</option>
                     <option value="Traslado">Traslado</option>
                 </select>
             </div>
@@ -88,8 +88,8 @@
         <table class="table table-bordered" id="materialsTable">
             <thead class="table-dark">
                 <tr>
+                    <th>ID</th>
                     <th>Material</th>
-                    <th>Aula</th>
                     <th>Cantidad</th>
                     <th>Estado</th>
                     <th>Acciones</th>
