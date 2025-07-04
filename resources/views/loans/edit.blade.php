@@ -22,7 +22,7 @@
         @csrf
         @method('PUT')
         <div class="row">
-            <div class="mb-3 col-4">
+            <div class="mb-3 col-3">
                 <label>Usuario:</label>
                 <input type="text" name="fecha_prestamo" class="form-control" value="{{ auth()->user()->name }}" required disabled>
             </div>
