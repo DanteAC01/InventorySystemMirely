@@ -343,10 +343,15 @@ return [
             'url' => 'materialCreate',
             'icon' => 'fas fa-plus-circle',
         ],  
-        ['header' => 'Prestamos'],
+        ['header' => 'Registros'],
         [
             'text' => 'Registro de Traslados',
             'url' => 'loanList',
+            'icon' => 'fas fa-list-alt',
+        ],        
+        [
+            'text' => 'Reportes',
+            'url' => 'home',
             'icon' => 'fas fa-list-alt',
         ],
               

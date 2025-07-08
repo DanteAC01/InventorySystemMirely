@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Movement;
+use Carbon\Carbon;
 
 
 class HomeController extends Controller
@@ -28,8 +29,10 @@ class HomeController extends Controller
         $movimientos = Movement::with(['originSector', 'destinationSector', 'movementDetails'])
             ->orderBy('id', 'asc')
             ->get();
-        // var_dump($movimientos); 
-        return view('home', compact('movimientos'));
+
+        $late = Movement::where('type', 'salida')->whereDate('date_return', '<', Carbon::today())->count();
+
+        return view('home', compact('movimientos', 'late'));
     }
 
     public function markAsReturned($id)
