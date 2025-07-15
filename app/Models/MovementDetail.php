@@ -16,9 +16,9 @@ class MovementDetail extends Model
         'status',
     ];
 
-    public function movementDetails()
+    public function movement()
     {
-        return $this->hasMany(MovementDetail::class, 'movement_id');
+        return $this->belongsTo(Movement::class);
     }
 
     public function material()

@@ -180,8 +180,13 @@ class PrestamoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Movement $prestamos)
+
+    public function destroy($transferid)
     {
-        //
+        $traslado = Movement::findOrFail($transferid);
+        $traslado->movementDetails()->delete();
+        $traslado->delete();
+
+        return redirect()->route('loanList')->with('success', 'Movimiento eliminado correctamente.');
     }
 }

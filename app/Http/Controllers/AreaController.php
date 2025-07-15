@@ -81,7 +81,7 @@ class AreaController extends Controller
     
     public function destroy(string $id)
     {
-        $classroom = Classroom::findOrFail($id);
+        $classroom = Sector::findOrFail($id);
         $classroom->delete();
 
         return redirect()->route('classroomList')->with('success', 'Aula eliminada correctamente.');

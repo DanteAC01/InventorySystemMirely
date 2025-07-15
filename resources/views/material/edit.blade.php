@@ -46,7 +46,8 @@
        <label for="sector_id" class="form-label">Área:</label>
        <select name="sector_id" class="form-control" required>
         @foreach ($sectorData as $sector)
-         <option value="{{ $sector->id }}">{{ $sector->name }}</option>
+          <option value="{{ $sector->id }}" {{ $sector->id == $material->sector_id ? 'selected' : '' }}>{{ $sector->name }}
+          </option>
         @endforeach
        </select>
       </div>
