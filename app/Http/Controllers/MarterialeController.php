@@ -109,6 +109,14 @@ class MarterialeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $material = Material::findOrFail($id);
+
+        // Elimina primero los detalles de movimientos relacionados si existen
+        $material->movementDetails()->delete();
+
+        // Luego elimina el material
+        $material->delete();
+
+        return redirect()->route('materialList')->with('success', 'Material eliminado correctamente.');
     }
 }
