@@ -351,7 +351,7 @@ return [
         ],        
         [
             'text' => 'Reportes',
-            'url' => 'home',
+            'url' => 'reports',
             'icon' => 'fas fa-list-alt',
         ],
               

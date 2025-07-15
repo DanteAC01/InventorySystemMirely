@@ -7,6 +7,7 @@ Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
   Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+  Route::get('reports', [App\Http\Controllers\HomeController::class, 'index'])->name('reports');
 
   Route::get('/classroomList', [App\Http\Controllers\AreaController::class, 'index'])->name('classroomList');
   Route::get('/classroomCreate', [App\Http\Controllers\AreaController::class, 'create'])->name('classroomCreate');
