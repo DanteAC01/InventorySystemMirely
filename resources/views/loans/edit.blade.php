@@ -37,6 +37,7 @@
             <div class="mb-3 col-3">
                 <label>Fecha Traslado:</label>
                 <input type="date" name="fecha_prestamo" class="form-control" value="{{ $date }}" required disabled>
+                <input type="hidden" name="fecha_prestamo" value="{{ $date }}">
             </div>
 
             <div class="mb-3 col-3">

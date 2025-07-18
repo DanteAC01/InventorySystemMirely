@@ -50,7 +50,7 @@ function showMaterials(materials) {
 **/
 
 function addMaterial() {
-    const areaSelect = document.getElementById('area_id');
+    const areaSelect = document.getElementById('origin_sector_id');
     const materialSelect = document.getElementById('material_id');
     const cantidadInput = document.getElementById('input_cantidad').value;
     const status = document.getElementById('input_estado').value;
